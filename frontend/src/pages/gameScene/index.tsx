@@ -14,7 +14,7 @@ const GameScenePage: React.FC = () => {
   const { stageRef, containerRef } = useStage();
   useWheelZoomHandler(stageRef);
   useSceneTools(stageRef);
-  // useKeyboardHotkeys(canvasRef);
+  useKeyboardHotkeys(stageRef);
   // useSceneHistory(canvasRef);
 
   console.log("GameScenePage rendered");

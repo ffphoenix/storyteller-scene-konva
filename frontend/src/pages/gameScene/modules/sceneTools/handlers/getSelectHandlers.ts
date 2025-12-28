@@ -3,88 +3,15 @@ import type { Stage } from "konva/lib/Stage";
 import type { MouseHandlers } from "../useSceneTools";
 import getActiveLayer from "../utils/getActiveLayer";
 import drawActiveLayer from "../utils/drawActiveLayer";
-
-const onMouseUpSelectByClick = (
-  stage: Stage,
-  e: Konva.KonvaEventObject<MouseEvent>,
-  transformer: Konva.Transformer,
-) => {
-  const node = e.target as Konva.Node;
-  // clicked on transformer - do nothing
-  if (node.getParent() === transformer || node === transformer) {
-    return;
-  }
-
-  // clicked on empty area - remove all selections
-  if (node === stage) {
-    transformer.nodes([]);
-    drawActiveLayer(stage);
-    return;
-  }
-
-  // click on non-object
-  if (!node.hasName("object")) {
-    transformer.nodes([]);
-    drawActiveLayer(stage);
-    return;
-  }
-  node.setDraggable(true);
-
-  // clicked on some node
-  const isSelected = transformer.nodes().includes(node);
-
-  if (!e.evt.shiftKey && !isSelected) {
-    // select only one
-    transformer.nodes([node]);
-  } else if (e.evt.shiftKey && isSelected) {
-    // remove from selection
-    const nodes = transformer.nodes().slice(); // clone array
-    nodes.splice(nodes.indexOf(node), 1);
-    transformer.nodes(nodes);
-  } else if (e.evt.shiftKey && !isSelected) {
-    // add to selection
-    const nodes = transformer.nodes().concat([node]);
-    transformer.nodes(nodes);
-  }
-  stage.batchDraw();
-};
-
-const onMouseUpSelectByArea = (stage: Stage, transformer: Konva.Transformer, selectionRectangle: Konva.Rect) => {
-  setTimeout(() => {
-    selectionRectangle.visible(false);
-  });
-  const box = selectionRectangle.getClientRect();
-  const selected = getActiveLayer(stage).getChildren((node) => {
-    return (
-      Konva.Util.haveIntersection(box, node.getClientRect()) &&
-      node.id() !== "selection-rectangle" &&
-      node !== transformer
-    );
-  });
-  selected.forEach((node) => node.setDraggable(true));
-  transformer.nodes(selected);
-  transformer.moveToTop();
-  stage.batchDraw();
-};
+import { onMouseUpSelectByClick } from "./select/onMouseUpSelectByClick";
+import { onMouseUpSelectByArea } from "./select/onMouseUpSelectByArea";
+import getTransformer from "../../../utils/transformer/getTransformer";
 
 const getSelectHandlers = (stage: Stage): MouseHandlers => {
   const activeLayer = getActiveLayer(stage);
-  let transformer = stage.findOne("Transformer") as Konva.Transformer;
-
-  if (!transformer) {
-    transformer = new Konva.Transformer({
-      name: "Transformer",
-      draggable: true,
-      shouldOverdrawWholeArea: true,
-    });
-    transformer.on("mousedown touchstart", function (e) {
-      console.log("mousedown touchstart");
-      e.evt.stopPropagation();
-    });
-  }
+  const transformer = getTransformer(stage);
   if (activeLayer) {
     activeLayer.add(transformer);
-    console.log("add transformer");
     transformer.moveToTop();
     drawActiveLayer(stage);
   }
@@ -92,7 +19,7 @@ const getSelectHandlers = (stage: Stage): MouseHandlers => {
   let selectionRectangle = stage.findOne("#selection-rectangle") as Konva.Rect;
   if (!selectionRectangle) {
     selectionRectangle = new Konva.Rect({
-      fill: "rgba(0,0,255,0.3)",
+      fill: "rgba(88,167,252,0.3)",
       visible: false,
       id: "selection-rectangle",
     });
