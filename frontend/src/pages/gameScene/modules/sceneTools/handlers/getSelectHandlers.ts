@@ -6,6 +6,7 @@ import drawActiveLayer from "../utils/drawActiveLayer";
 import { onMouseUpSelectByClick } from "./select/onMouseUpSelectByClick";
 import { onMouseUpSelectByArea } from "./select/onMouseUpSelectByArea";
 import getTransformer from "../../../utils/transformer/getTransformer";
+import deSelectTransformerNodes from "../../../utils/transformer/deSelectTransformerNodes";
 
 const getSelectHandlers = (stage: Stage): MouseHandlers => {
   const activeLayer = getActiveLayer(stage);
@@ -94,7 +95,7 @@ const getSelectHandlers = (stage: Stage): MouseHandlers => {
     onMouseUp,
     onMouseMove: () => {},
     handlerDisposer: () => {
-      transformer.nodes([]);
+      deSelectTransformerNodes(stage);
       transformer.destroy();
       selectionRectangle.destroy();
       stage.batchDraw();

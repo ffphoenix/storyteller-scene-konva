@@ -16,14 +16,13 @@ export const onMouseUpSelectByClick = (
 
   // clicked on empty area - remove all selections
   if (node === stage) {
-    deSelectTransformerNodes(stage, transformer);
+    deSelectTransformerNodes(stage);
     return;
   }
 
   // click on non-object
   if (!node.hasName("object")) {
-    transformer.nodes([]);
-    drawActiveLayer(stage);
+    deSelectTransformerNodes(stage);
     return;
   }
   node.setDraggable(true);
@@ -33,11 +32,13 @@ export const onMouseUpSelectByClick = (
 
   if (!e.evt.shiftKey && !isSelected) {
     // select only one
+    deSelectTransformerNodes(stage);
     transformer.nodes([node]);
   } else if (e.evt.shiftKey && isSelected) {
     // remove from selection
     const nodes = transformer.nodes().slice(); // clone array
     nodes.splice(nodes.indexOf(node), 1);
+    node.setDraggable(false);
     transformer.nodes(nodes);
   } else if (e.evt.shiftKey && !isSelected) {
     // add to selection
