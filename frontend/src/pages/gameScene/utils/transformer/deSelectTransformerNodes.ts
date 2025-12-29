@@ -4,6 +4,7 @@ import getTransformer from "./getTransformer";
 
 const deSelectTransformerNodes = (stage: Konva.Stage) => {
   const transformer = getTransformer(stage);
+  if (transformer.nodes().length === 0) return;
   transformer.nodes().forEach((node: Konva.Node) => node.setDraggable(false));
   transformer.nodes([]);
   drawActiveLayer(stage);

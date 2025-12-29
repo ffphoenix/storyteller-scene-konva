@@ -1,11 +1,11 @@
 import type Konva from "konva";
-import { getKonvaObjectByUuid } from "../../../utils/getKonvaObjectByUuid";
 
-const removeObject = (stage: Konva.Stage, object: Konva.Node) => {
-  const objectToDelete = getKonvaObjectByUuid(stage, object.getAttr("UUID") ?? "");
-  if (!objectToDelete) throw new Error(`Cannot delete object - object not found by UUID: ${object.getAttr("UUID")}`);
-  objectToDelete.setAttr("isChangedByHistory", true);
-  objectToDelete.destroy();
+const removeObject = (stage: Konva.Stage, nodes: Partial<Konva.Node>[]) => {
+  if (nodes.length === 0) return;
+  nodes.forEach((node) => {
+    const stageNode = stage.findOne(`#${node.attrs.id}`);
+    stageNode?.destroy();
+  });
   stage.batchDraw();
 };
 export default removeObject;

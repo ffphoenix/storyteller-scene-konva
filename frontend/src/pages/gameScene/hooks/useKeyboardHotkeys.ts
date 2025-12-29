@@ -2,12 +2,16 @@ import { type MutableRefObject, useEffect } from "react";
 import Konva from "konva";
 import isKeyDownInterceptable from "../utils/isKeyDownInterceptable";
 import getTransformer from "../utils/transformer/getTransformer";
+import fireObjectRemovedEvent from "../modules/sceneActions/catcher/fireObjectRemovedEvent";
 
 const handleDeleteSelected = (stage: Konva.Stage) => {
   const transformer = getTransformer(stage);
-  if (transformer.nodes().length === 0) return;
+  const transformerLayer = transformer.getLayer();
+  if (!transformer || !transformerLayer || transformer.nodes().length === 0) return;
+  const transformerNodes = transformer.getNodes();
   transformer.nodes().forEach((node) => node.destroy());
   transformer.nodes([]);
+  fireObjectRemovedEvent("self", transformerNodes, transformerLayer.id());
   stage.batchDraw();
 };
 

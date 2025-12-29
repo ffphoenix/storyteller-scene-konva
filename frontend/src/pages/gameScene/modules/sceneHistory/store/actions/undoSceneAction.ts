@@ -2,7 +2,6 @@ import type Konva from "konva";
 import SceneHistoryStore from "../SceneHistoryStore";
 import type { MutableRefObject } from "react";
 import doHistoryAction from "./doHistoryAction";
-import { getObjectTransformProps } from "../../utils/getObjectTransformProps";
 import { toJS } from "mobx";
 
 const undoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
@@ -15,23 +14,12 @@ const undoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
   if (historyItem.action === "modify" && !historyItem.originalProps) return;
 
   try {
-    const { originalProps, object, action, pan } = toJS(historyItem);
-    let transformProps;
+    const { nodes, action, layerId } = toJS(historyItem);
 
-    // Simplification for Konva: handle multi-selection by iterating or creating a group if needed
-    // For now, let's focus on single objects or simple arrays
-    if (Array.isArray(object)) {
-      // @TODO: handle multi-object undo/redo properly in Konva
-      object.forEach((obj: any) => {
-        doHistoryAction("undo", stage, action, obj, pan, originalProps);
-      });
-    } else {
-      transformProps = getObjectTransformProps(object as Konva.Node);
-      doHistoryAction("undo", stage, action, object as Konva.Node, pan, originalProps);
-    }
+    doHistoryAction("undo", stage, action, nodes, layerId);
 
     SceneHistoryStore.popUndoHistoryItem();
-    SceneHistoryStore.addRedoHistoryItem(action, { pan, object, originalProps: transformProps });
+    SceneHistoryStore.addRedoHistoryItem(action, { nodes, layerId });
   } catch (e) {
     console.error(e);
     SceneHistoryStore.popUndoHistoryItem();

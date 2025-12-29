@@ -56,7 +56,7 @@ const getDrawRectHandlers = (stage: Stage): MouseHandlers => {
 
   const onMouseUp = () => {
     if (activeObject) {
-      fireObjectAddedEvent(stage, "self", activeObject);
+      fireObjectAddedEvent("self", activeObject);
     }
     activeObject = null;
     relativePos = null;

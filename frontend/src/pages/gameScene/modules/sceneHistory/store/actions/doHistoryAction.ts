@@ -7,20 +7,19 @@ export const doHistoryAction = (
   queue: "undo" | "redo",
   stage: Konva.Stage,
   action: "add" | "modify" | "remove",
-  object: Konva.Node,
-  pan: { x: number; y: number },
-  originalProps: any = {},
+  nodes: Partial<Konva.Node>[],
+  layerId: string,
 ) => {
   const undoMapByAction = {
-    add: () => removeObject(stage, object),
-    modify: () => modifyObject(stage, object, originalProps, pan),
-    remove: () => addObject(stage, object, pan),
+    add: () => removeObject(stage, nodes),
+    modify: () => modifyObject(stage, nodes),
+    remove: () => addObject(stage, nodes, layerId),
   };
 
   const redoMapByAction = {
-    add: () => addObject(stage, object, pan),
-    modify: () => modifyObject(stage, object, originalProps, pan),
-    remove: () => removeObject(stage, object),
+    add: () => addObject(stage, nodes, layerId),
+    modify: () => modifyObject(stage, nodes),
+    remove: () => removeObject(stage, nodes),
   };
 
   const actionMap = queue === "undo" ? undoMapByAction : redoMapByAction;

@@ -28,7 +28,7 @@ const getTextHandlers = (stage: Stage): MouseHandlers => {
     layer.add(text);
     layer.batchDraw();
 
-    fireObjectAddedEvent(stage, "self", text);
+    fireObjectAddedEvent("self", text);
     SceneStore.setActiveTool("select");
 
     // In a real Konva app, you'd handle text editing with a hidden textarea

@@ -1,14 +1,15 @@
 import type Konva from "konva";
-import type { ActionProducer } from "../types";
-import { checkObjectUUIDs } from "../utils/checkObjectUUIDs";
+import type { ActionProducer, SceneActionEvent } from "../types";
 
 const fireObjectRemovedEvent = (
-  stage: Konva.Stage,
   producer: ActionProducer,
-  object: Konva.Node | Konva.Node[],
-  event?: any,
+  nodes: Konva.Node | Konva.Node[],
+  layerId: string,
+  event?: Konva.KonvaEventObject<MouseEvent>,
 ) => {
-  // checkObjectUUIDs(object);
-  // stage.fire("sc:object:removed", { producer, target: object, e: event });
+  console.log("fireObjectRemovedEvent", producer, nodes, layerId);
+  document.dispatchEvent(
+    new CustomEvent<SceneActionEvent>("sc:object:removed", { detail: { producer, nodes, e: event, layerId } }),
+  );
 };
 export default fireObjectRemovedEvent;

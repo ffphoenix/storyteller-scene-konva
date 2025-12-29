@@ -3,18 +3,17 @@ import type Konva from "konva";
 import type { ModifyActionType } from "../../sceneActions/types";
 
 type Action = "add" | "modify" | "remove";
-type Pan = { x: number; y: number };
 type EventItem = {
-  pan: Pan;
-  object: Konva.Node | Konva.Node[];
-  originalProps?: any;
+  layerId: string;
+  nodes: Partial<Konva.Node>[];
+  originalProps?: Partial<Konva.Node>;
   actionType?: ModifyActionType;
 };
 export type HistoryItem = {
   action: Action;
-  object: Konva.Node | Konva.Node[];
-  pan: Pan;
-  originalProps?: any;
+  layerId: string;
+  nodes: Partial<Konva.Node>[];
+  originalProps?: Partial<Konva.Node>;
   actionType?: ModifyActionType;
 };
 type SceneHistory = {

@@ -43,7 +43,7 @@ const getDrawArrowHandlers = (stage: Stage): MouseHandlers => {
     layer.draw();
   };
 
-  const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
+  const onMouseMove = () => {
     if (!arrowState) return;
 
     const pos = stage.getPointerPosition();
@@ -111,7 +111,7 @@ const getDrawArrowHandlers = (stage: Stage): MouseHandlers => {
     const layer = getActiveLayer(stage);
     layer.add(group);
     layer.draw();
-    fireObjectAddedEvent(stage, "self", group);
+    fireObjectAddedEvent("self", group);
   };
 
   const handlerDisposer = () => {

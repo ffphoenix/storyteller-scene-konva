@@ -49,7 +49,7 @@ const getDrawPencilHandlers = (stage: Stage): MouseHandlers => {
 
   const onMouseUp = () => {
     if (isDrawing && lastLine) {
-      fireObjectAddedEvent(stage, "self", lastLine);
+      fireObjectAddedEvent("self", lastLine);
     }
     isDrawing = false;
     lastLine = null;

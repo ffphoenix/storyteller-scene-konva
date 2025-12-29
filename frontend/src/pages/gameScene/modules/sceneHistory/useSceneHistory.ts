@@ -4,8 +4,9 @@ import type Konva from "konva";
 import isKeyDownInterceptable from "../../utils/isKeyDownInterceptable";
 import undoSceneAction from "./store/actions/undoSceneAction";
 import redoSceneAction from "./store/actions/redoSceneAction";
-import getPan from "./utils/getPan";
 import { autorun, toJS } from "mobx";
+import type { SceneActionEvent } from "../sceneActions/types";
+import nodesToJSON from "../../utils/nodes/nodesToJSON";
 
 export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage | null>) {
   useEffect(() => {
@@ -14,35 +15,35 @@ export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage |
         console.log("Scene History UNDO changed", toJS(SceneHistoryStore.undoHistory));
         console.log("Scene History REDO changed", toJS(SceneHistoryStore.redoHistory));
       },
-      { delay: 500 },
+      { delay: 1000 },
     );
     const stage = stageRef.current;
     if (!stage) return;
 
-    const onObjectAdded = (e: any) => {
-      const object = e.target;
-      console.log("[object:added][history]", object);
-      SceneHistoryStore.addUndoHistoryItem("add", { pan: getPan(stageRef), object });
+    const onObjectAdded = (e: CustomEvent<SceneActionEvent>) => {
+      if (e.detail.producer !== "self") return;
+      const { nodes, layerId } = e.detail;
+      SceneHistoryStore.addUndoHistoryItem("add", { nodes: nodesToJSON(nodes), layerId });
     };
-    stage.on("sc:object:added", onObjectAdded);
+    document.addEventListener("sc:object:added", onObjectAdded as EventListener);
 
-    const onObjectModified = (e: any) => {
-      const object = e.target;
-      // Konva doesn't have transform.original, we might need to store it before drag
-      SceneHistoryStore.addUndoHistoryItem("modify", {
-        object,
-        pan: getPan(stageRef),
-        originalProps: e.originalProps ?? undefined,
-        actionType: e.actionType,
-      });
+    const onObjectModified = (e: CustomEvent<SceneActionEvent>) => {
+      // const object = e.target;
+      // // Konva doesn't have transform.original, we might need to store it before drag
+      // SceneHistoryStore.addUndoHistoryItem("modify", {
+      //   object,
+      //   originalProps: e.originalProps ?? undefined,
+      //   actionType: e.actionType,
+      // });
     };
-    stage.on("sc:object:modified", onObjectModified);
+    document.addEventListener("sc:object:modified", onObjectModified as EventListener);
 
-    const onObjectRemoved = ({ producer, target }: any) => {
+    const onObjectRemoved = (e: CustomEvent<SceneActionEvent>) => {
+      const { nodes, layerId, producer } = e.detail;
       if (producer !== "self") return;
-      SceneHistoryStore.addUndoHistoryItem("remove", { pan: getPan(stageRef), object: target });
+      SceneHistoryStore.addUndoHistoryItem("remove", { nodes: nodesToJSON(nodes), layerId });
     };
-    stage.on("sc:object:removed", onObjectRemoved);
+    document.addEventListener("sc:object:removed", onObjectRemoved as EventListener);
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (!isKeyDownInterceptable(e, stage)) return;
@@ -69,9 +70,9 @@ export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage |
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      stage.off("sc:object:added", onObjectAdded);
-      stage.off("sc:object:modified", onObjectModified);
-      stage.off("sc:object:removed", onObjectRemoved);
+      document.removeEventListener("sc:object:added", onObjectAdded as EventListener);
+      document.removeEventListener("sc:object:modified", onObjectModified as EventListener);
+      document.removeEventListener("sc:object:removed", onObjectRemoved as EventListener);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, []);

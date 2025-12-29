@@ -1,25 +1,14 @@
 import type Konva from "konva";
-import { checkObjectUUIDs } from "../utils/checkObjectUUIDs";
-import type { ModifyActionType } from "../types";
+import type { ModifyActionType, SceneActionEvent } from "../types";
 
-const fireObjectModifiedEvent = (stage: Konva.Stage, event: Konva.KonvaEventObject<any>) => {
-  // const target = event.target;
-  // const producer = target.getAttr("changeMadeBy") ?? "self";
-  // if (producer !== "self") return;
-  //
-  // if (target.getAttr("isChangedByHistory")) {
-  //   target.setAttr("isChangedByHistory", false);
-  //   return;
-  // }
-  //
-  // const objects = [target];
-  // checkObjectUUIDs(objects);
+const fireObjectModifiedEvent = (object: Konva.Node | Konva.Node[], event?: Konva.KonvaEventObject<MouseEvent>) => {
+  const producer = "self";
+  if (producer !== "self") return;
 
-  // Konva doesn't have a direct 'actionType' in move events, but we can infer it
-  // if we're using a Transformer, we'd listen to its events.
-  // For now, let's assume 'drag' as it's the most common manual modification.
   const actionType: ModifyActionType = "drag";
 
-  // stage.fire("sc:object:modified", { producer, target: objects, actionType });
+  document.dispatchEvent(
+    new CustomEvent<SceneActionEvent>("sc:object:modified", { detail: { producer, object, e: event, actionType } }),
+  );
 };
 export default fireObjectModifiedEvent;

@@ -1,14 +1,12 @@
-import type Konva from "konva";
-import { setPanKeepingZoom } from "../../sceneHistory/utils/setPanKeepingZoom";
+import Konva from "konva";
 
-const addObject = (stage: Konva.Stage, object: Konva.Node, pan: { x: number; y: number }) => {
-  const layer = stage.getLayers()[0];
-
-  const clone = object.clone();
-  clone.setAttr("isChangedByHistory", true);
-  layer.add(clone);
-
-  setPanKeepingZoom(stage, pan);
+const addObject = (stage: Konva.Stage, nodes: Partial<Konva.Node>[], layerId: string) => {
+  const layer = stage.findOne(`#${layerId}`) as Konva.Layer;
+  nodes.forEach((nodeJSON) => {
+    const node = Konva.Node.create(nodeJSON);
+    layer.add(node);
+  });
+  stage.batchDraw();
 };
 
 export default addObject;

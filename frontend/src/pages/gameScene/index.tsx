@@ -15,22 +15,18 @@ const GameScenePage: React.FC = () => {
   useWheelZoomHandler(stageRef);
   useSceneTools(stageRef);
   useKeyboardHotkeys(stageRef);
-  // useSceneHistory(canvasRef);
+  useSceneHistory(stageRef);
 
   console.log("GameScenePage rendered");
 
   return (
     <div className="relative w-full h-full min-h-screen">
-      {/* Absolute vertical menu on the left */}
-      <img src="/images/grid.png" id="bgimage" className="hidden" />
-
       <div className="absolute left-0 top-0 h-full p-3 border-r bg-white/90 backdrop-blur-sm z-1000">
         <ToolMenu stageRef={stageRef} />
       </div>
 
-      {/* Canvas area with left padding to avoid overlap */}
-      <ZoomControls stageRef={stageRef} />
       <div className="w-full h-full border rounded bg-white overflow-hidden relative" ref={containerRef}></div>
+      <ZoomControls stageRef={stageRef} />
       <SceneContextMenu />
     </div>
   );

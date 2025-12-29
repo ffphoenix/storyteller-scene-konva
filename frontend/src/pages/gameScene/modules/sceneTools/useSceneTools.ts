@@ -45,8 +45,6 @@ const useSceneTools = (stageRef: MutableRefObject<Stage | null>) => {
       unsubscribeCallbackRef.current();
       console.log("activeTool changed", SceneStore.activeTool);
       stage.container().style.cursor = "default";
-      // @TODO: Selection logic will be handled within handlers or transformer
-
       const { onMouseDown, onMouseUp, onMouseMove, handlerDisposer } = getMouseHandlers(SceneStore.activeTool, stage);
 
       stage.on("mousedown touchstart", onMouseDown);
