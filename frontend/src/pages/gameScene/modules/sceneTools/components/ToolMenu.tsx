@@ -64,7 +64,7 @@ const ToolMenu: React.FC<Props> = ({ stageRef }) => {
           onClick={() => SceneStore.setActiveTool("measure")}
           tooltip="Measure (distance)"
         />
-        {/*<UploadImageButton canvasRef={stageRef} />*/}
+        <UploadImageButton stageRef={stageRef} />
       </div>
 
       <div className="h-px w-full bg-gray-200" />

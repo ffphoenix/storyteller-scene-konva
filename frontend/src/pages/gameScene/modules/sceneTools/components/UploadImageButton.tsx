@@ -1,15 +1,15 @@
 import { type MutableRefObject, useRef } from "react";
-import type { Canvas } from "fabric";
+import Konva from "konva";
 import { Button, type ButtonProps } from "primereact/button";
 import { ImageIcon } from "../../../icons";
 import handleImageUpload from "../handleImageUpload";
 
-type UploadImageButtonProps = ButtonProps & { canvasRef: MutableRefObject<Canvas | null> };
-const UploadImageButton = ({ canvasRef }: UploadImageButtonProps) => {
+type UploadImageButtonProps = ButtonProps & { stageRef: MutableRefObject<Konva.Stage | null> };
+const UploadImageButton = ({ stageRef }: UploadImageButtonProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  if (!canvasRef.current) return null;
-  const canvas = canvasRef.current;
+  if (!stageRef.current) return null;
+  const stage = stageRef.current;
 
   return (
     <>
@@ -21,7 +21,7 @@ const UploadImageButton = ({ canvasRef }: UploadImageButtonProps) => {
         onChange={(e) => {
           const file = e.target.files && e.target.files[0];
           if (file) {
-            handleImageUpload(canvas, file);
+            handleImageUpload(stage, file);
             // clear the input so the same file can be selected again if needed
             e.currentTarget.value = "";
           }
