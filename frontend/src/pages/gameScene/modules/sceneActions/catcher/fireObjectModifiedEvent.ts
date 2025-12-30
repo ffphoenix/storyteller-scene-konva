@@ -5,14 +5,23 @@ const fireObjectModifiedEvent = (
   producer: ActionProducer,
   actionType: ModifyActionType,
   nodes: Konva.Shape,
+  transformer: Konva.Transformer,
   originalProps: Partial<Konva.NodeConfig>,
-  event?: Konva.KonvaEventObject<MouseEvent>,
+  event?: MouseEvent,
 ) => {
   if (producer !== "self") return;
-
+  console.log("fireObjectModifiedEvent", producer, nodes, transformer, originalProps, event);
   document.dispatchEvent(
     new CustomEvent<SceneActionEvent>("sc:object:modified", {
-      detail: { producer, nodes, e: event, actionType, originalProps, layerId: nodes.getLayer()?.id() ?? "" },
+      detail: {
+        producer,
+        nodes,
+        event,
+        actionType,
+        originalProps,
+        transformer,
+        layerId: nodes.getLayer()?.id() ?? "",
+      },
     }),
   );
 };

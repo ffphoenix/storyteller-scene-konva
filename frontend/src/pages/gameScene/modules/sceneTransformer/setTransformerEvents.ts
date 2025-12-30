@@ -7,16 +7,26 @@ import { toJS } from "mobx";
 
 const setTransformerEvents = (transformer: Konva.Transformer) => {
   transformer.on("transformend dragend", (e) => {
-    // const node = e.target as Konva.Shape;
-    const node = e.currentTarget as Konva.Transformer;
+    const nodes = e.target as Konva.Shape;
+    const transformerNode = e.currentTarget as Konva.Transformer;
     console.log(
-      "transformend",
-      getNodeTransformProps(node),
+      "=============transformend",
       getNodeTransformProps(e.target as Konva.Node),
+      getNodeTransformProps(transformerNode),
       e.target.getType(),
+      e.currentTarget.getType(),
+      e.target,
+      e.currentTarget,
     );
-    fireObjectModifiedEvent("self", e.type as ModifyActionType, node, toJS(sceneTransformerStore.startProps), e);
-    sceneTransformerStore.setStartProps(getNodeTransformProps(node));
+    fireObjectModifiedEvent(
+      "self",
+      e.type as ModifyActionType,
+      nodes,
+      transformerNode,
+      toJS(sceneTransformerStore.startProps),
+      e.evt,
+    );
+    sceneTransformerStore.setStartProps(getNodeTransformProps(nodes));
   });
 };
 export default setTransformerEvents;

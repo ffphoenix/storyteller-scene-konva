@@ -30,13 +30,13 @@ export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage |
 
     const onObjectModified = (e: CustomEvent<SceneActionEvent>) => {
       if (e.detail.producer !== "self") return;
-      const { layerId, actionType, originalProps } = e.detail;
-      const nodes = e.detail.nodes as Konva.Transformer;
+      const { layerId, actionType, originalProps, transformer, nodes } = e.detail;
+      if (!transformer) throw new Error("Transformer is required");
       SceneHistoryStore.addUndoHistoryItem("modify", {
-        nodes: nodesToJSON(nodes.getNodes()),
+        nodes: nodesToJSON(transformer.nodes()),
         layerId,
         actionType,
-        currentGroupProps: getNodeTransformProps(nodes),
+        currentGroupProps: { ...getNodeTransformProps(nodes as Konva.Shape), x: transformer.x(), y: transformer.y() },
         originalGroupProps: originalProps,
       });
     };

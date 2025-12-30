@@ -8,7 +8,8 @@ export type SceneActionEvent = {
   producer: ActionProducer;
   layerId: string;
   nodes: Konva.Node | Konva.Node[];
-  e?: Konva.KonvaEventObject<MouseEvent>;
+  transformer?: Konva.Transformer;
+  event?: MouseEvent;
   actionType?: ModifyActionType;
   originalProps?: Partial<Konva.NodeConfig>;
 };

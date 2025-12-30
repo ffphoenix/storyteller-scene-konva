@@ -12,17 +12,16 @@ const redoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
   if (!historyItem) return;
 
   try {
-    const { nodes, action, layerId, originalGroupProps } = toJS(historyItem);
-    doHistoryAction("redo", stage, action, nodes, layerId, originalGroupProps);
-
+    const { nodes, action, actionType, layerId, originalGroupProps, currentGroupProps } = toJS(historyItem);
+    doHistoryAction("redo", stage, action, nodes, layerId, originalGroupProps, currentGroupProps);
     SceneHistoryStore.popRedoHistoryItem();
     SceneHistoryStore.addUndoHistoryItem(
       action,
       {
         nodes,
         layerId,
-        actionType: historyItem.actionType,
-        originalGroupProps: historyItem.currentGroupProps,
+        actionType,
+        originalGroupProps: currentGroupProps,
         currentGroupProps: originalGroupProps,
       },
       true,

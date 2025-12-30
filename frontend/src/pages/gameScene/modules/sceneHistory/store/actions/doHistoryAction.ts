@@ -14,13 +14,13 @@ export const doHistoryAction = (
 ) => {
   const undoMapByAction = {
     add: () => removeObject(stage, nodes),
-    modify: () => modifyObject(stage, nodes, originalProps, currentGroupProps),
+    modify: () => modifyObject(stage, layerId, nodes, originalProps, currentGroupProps),
     remove: () => addObject(stage, nodes, layerId),
   };
 
   const redoMapByAction = {
     add: () => addObject(stage, nodes, layerId),
-    modify: () => modifyObject(stage, nodes, originalProps, currentGroupProps),
+    modify: () => modifyObject(stage, layerId, nodes, originalProps, currentGroupProps),
     remove: () => removeObject(stage, nodes),
   };
 
