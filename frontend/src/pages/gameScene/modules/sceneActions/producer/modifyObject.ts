@@ -38,7 +38,7 @@ const modifyObject = (
     const attrs = multiply.decompose();
     node.setAttrs(attrs);
   });
-
+  // TODO: fix history scale bugs
   tempGroup.setAttrs({
     x: originalProps.x,
     y: originalProps.y,

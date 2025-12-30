@@ -36,6 +36,7 @@ export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage |
         nodes: nodesToJSON(transformer.nodes()),
         layerId,
         actionType,
+        // @TODO fix this, find graceful realization
         currentGroupProps: { ...getNodeTransformProps(nodes as Konva.Shape), x: transformer.x(), y: transformer.y() },
         originalGroupProps: originalProps,
       });
