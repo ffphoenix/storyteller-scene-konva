@@ -1,6 +1,8 @@
 import type { Stage } from "konva/lib/Stage";
 import Konva from "konva";
 import getActiveLayer from "../../utils/getActiveLayer";
+import getNodeTransformProps from "../../../sceneTransformer/getNodeTransformProps";
+import sceneTransformerStore from "../../../sceneTransformer/store/SceneTransformerStore";
 
 export const onMouseUpSelectByArea = (stage: Stage, transformer: Konva.Transformer, selectionRectangle: Konva.Rect) => {
   setTimeout(() => {
@@ -17,5 +19,6 @@ export const onMouseUpSelectByArea = (stage: Stage, transformer: Konva.Transform
   selected.forEach((node) => node.setDraggable(true));
   transformer.nodes(selected);
   transformer.moveToTop();
+  sceneTransformerStore.setStartProps(getNodeTransformProps(transformer));
   stage.batchDraw();
 };

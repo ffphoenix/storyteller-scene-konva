@@ -6,14 +6,16 @@ type Action = "add" | "modify" | "remove";
 type EventItem = {
   layerId: string;
   nodes: Partial<Konva.Node>[];
-  originalProps?: Partial<Konva.Node>;
+  originalGroupProps?: Partial<Konva.NodeConfig>;
+  currentGroupProps?: Partial<Konva.NodeConfig>;
   actionType?: ModifyActionType;
 };
 export type HistoryItem = {
   action: Action;
   layerId: string;
   nodes: Partial<Konva.Node>[];
-  originalProps?: Partial<Konva.Node>;
+  originalGroupProps?: Partial<Konva.NodeConfig>;
+  currentGroupProps?: Partial<Konva.NodeConfig>;
   actionType?: ModifyActionType;
 };
 type SceneHistory = {

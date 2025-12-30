@@ -10,16 +10,22 @@ const undoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
 
   const historyItem = SceneHistoryStore.latestUndoHistoryItem;
   if (!historyItem) return;
-
-  if (historyItem.action === "modify" && !historyItem.originalProps) return;
+  console.log("undo history item", toJS(historyItem));
+  if (historyItem.action === "modify" && !historyItem.originalGroupProps) return;
 
   try {
-    const { nodes, action, layerId } = toJS(historyItem);
-
-    doHistoryAction("undo", stage, action, nodes, layerId);
+    const { nodes, action, actionType, layerId, originalGroupProps, currentGroupProps } = toJS(historyItem);
+    console.log("undo", action, nodes, layerId, originalGroupProps);
+    doHistoryAction("undo", stage, action, nodes, layerId, originalGroupProps, currentGroupProps);
 
     SceneHistoryStore.popUndoHistoryItem();
-    SceneHistoryStore.addRedoHistoryItem(action, { nodes, layerId });
+    SceneHistoryStore.addRedoHistoryItem(action, {
+      nodes,
+      layerId,
+      actionType,
+      originalGroupProps: currentGroupProps,
+      currentGroupProps: originalGroupProps,
+    });
   } catch (e) {
     console.error(e);
     SceneHistoryStore.popUndoHistoryItem();

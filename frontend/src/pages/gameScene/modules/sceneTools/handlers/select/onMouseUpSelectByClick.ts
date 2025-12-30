@@ -1,7 +1,9 @@
 import type { Stage } from "konva/lib/Stage";
 import Konva from "konva";
-import deSelectTransformerNodes from "../../../../utils/transformer/deSelectTransformerNodes";
+import clearTransformerNodesSelection from "../../../sceneTransformer/clearTransformerNodesSelection";
 import drawActiveLayer from "../../utils/drawActiveLayer";
+import getNodeTransformProps from "../../../sceneTransformer/getNodeTransformProps";
+import sceneTransformerStore from "../../../sceneTransformer/store/SceneTransformerStore";
 
 export const onMouseUpSelectByClick = (
   stage: Stage,
@@ -16,13 +18,13 @@ export const onMouseUpSelectByClick = (
 
   // clicked on empty area - remove all selections
   if (node === stage) {
-    deSelectTransformerNodes(stage);
+    clearTransformerNodesSelection(stage);
     return;
   }
 
   // click on non-object
   if (!node.hasName("object")) {
-    deSelectTransformerNodes(stage);
+    clearTransformerNodesSelection(stage);
     return;
   }
   node.setDraggable(true);
@@ -32,7 +34,7 @@ export const onMouseUpSelectByClick = (
 
   if (!e.evt.shiftKey && !isSelected) {
     // select only one
-    deSelectTransformerNodes(stage);
+    clearTransformerNodesSelection(stage);
     transformer.nodes([node]);
   } else if (e.evt.shiftKey && isSelected) {
     // remove from selection
@@ -46,4 +48,7 @@ export const onMouseUpSelectByClick = (
     transformer.nodes(nodes);
   }
   stage.batchDraw();
+  sceneTransformerStore.setStartProps(getNodeTransformProps(transformer));
+  drawActiveLayer(stage);
+  transformer.moveToTop();
 };

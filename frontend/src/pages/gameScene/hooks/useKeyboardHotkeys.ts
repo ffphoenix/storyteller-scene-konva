@@ -1,7 +1,7 @@
 import { type MutableRefObject, useEffect } from "react";
 import Konva from "konva";
 import isKeyDownInterceptable from "../utils/isKeyDownInterceptable";
-import getTransformer from "../utils/transformer/getTransformer";
+import getTransformer from "../modules/sceneTransformer/getTransformer";
 import fireObjectRemovedEvent from "../modules/sceneActions/catcher/fireObjectRemovedEvent";
 
 const handleDeleteSelected = (stage: Konva.Stage) => {

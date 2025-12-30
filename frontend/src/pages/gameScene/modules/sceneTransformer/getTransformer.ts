@@ -1,4 +1,5 @@
 import Konva from "konva";
+import setTransformerEvents from "./setTransformerEvents";
 
 const getTransformer = (stage: Konva.Stage): Konva.Transformer => {
   let transformer = stage.findOne("Transformer") as Konva.Transformer;
@@ -9,6 +10,7 @@ const getTransformer = (stage: Konva.Stage): Konva.Transformer => {
       draggable: true,
       shouldOverdrawWholeArea: true,
     });
+    setTransformerEvents(transformer);
   }
   return transformer;
 };

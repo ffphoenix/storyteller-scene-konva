@@ -7,6 +7,7 @@ import redoSceneAction from "./store/actions/redoSceneAction";
 import { autorun, toJS } from "mobx";
 import type { SceneActionEvent } from "../sceneActions/types";
 import nodesToJSON from "../../utils/nodes/nodesToJSON";
+import getNodeTransformProps from "../sceneTransformer/getNodeTransformProps";
 
 export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage | null>) {
   useEffect(() => {
@@ -28,13 +29,16 @@ export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage |
     document.addEventListener("sc:object:added", onObjectAdded as EventListener);
 
     const onObjectModified = (e: CustomEvent<SceneActionEvent>) => {
-      // const object = e.target;
-      // // Konva doesn't have transform.original, we might need to store it before drag
-      // SceneHistoryStore.addUndoHistoryItem("modify", {
-      //   object,
-      //   originalProps: e.originalProps ?? undefined,
-      //   actionType: e.actionType,
-      // });
+      if (e.detail.producer !== "self") return;
+      const { layerId, actionType, originalProps } = e.detail;
+      const nodes = e.detail.nodes as Konva.Transformer;
+      SceneHistoryStore.addUndoHistoryItem("modify", {
+        nodes: nodesToJSON(nodes.getNodes()),
+        layerId,
+        actionType,
+        currentGroupProps: getNodeTransformProps(nodes),
+        originalGroupProps: originalProps,
+      });
     };
     document.addEventListener("sc:object:modified", onObjectModified as EventListener);
 
