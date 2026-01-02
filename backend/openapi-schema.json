@@ -154,11 +154,6 @@
             }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
         "tags": [
           "users"
         ]

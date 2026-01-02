@@ -6,7 +6,6 @@ import { GoogleLoginDto } from './dto/google-login.dto';
 import { Request } from 'express';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { Public } from '../../../common/decorators/public.decorator';
-import { User } from '../users/user.entity';
 import { JwtTokensResponse } from './interfaces/jwt-tokens-response.interface';
 import { RefreshTokenPayloadInterface } from './interfaces/refresh-token-payload.interface';
 

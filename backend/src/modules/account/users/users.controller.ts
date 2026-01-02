@@ -49,7 +49,7 @@ export class UsersController {
   }
 
   @Get('me')
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor)
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns current authenticated user', type: User })
