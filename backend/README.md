@@ -13,7 +13,7 @@ npm run generate:api-client
 ```
 If running in Docker
 ```bash
-docker exec -ti gateway npm run generate:api-client
+docker exec -ti app npm run generate:api-client
 ```
 
 ### Using the Generated API Client
@@ -76,7 +76,7 @@ npm run migration:generate
 ```
 If running in Docker
 ```bash
-docker exec -ti gateway npm run migration:generate
+docker exec -ti app npm run migration:generate
 ```
 
 ### Run migrations
@@ -86,7 +86,7 @@ npm run migration:run
 ```
 If running in Docker
 ```bash
-docker exec -ti gateway npm run migration:run
+docker exec -ti app npm run migration:run
 ```
 
 ### Revert last migration
@@ -95,7 +95,7 @@ docker exec -ti gateway npm run migration:run
 npm run migration:revert
 
 # If running in Docker
-docker exec -ti gateway npm run migration:revert
+docker exec -ti app npm run migration:revert
 ```
 
 # watch mode

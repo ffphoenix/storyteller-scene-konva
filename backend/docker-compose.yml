@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile
-    container_name: gateway
+    container_name: app
     environment:
       - PORT=${PORT}
     ports:
