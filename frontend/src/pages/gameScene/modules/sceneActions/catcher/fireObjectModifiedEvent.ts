@@ -10,7 +10,6 @@ const fireObjectModifiedEvent = (
   event?: MouseEvent,
 ) => {
   if (producer !== "self") return;
-  console.log("fireObjectModifiedEvent", producer, nodes, transformer, originalProps, event);
   document.dispatchEvent(
     new CustomEvent<SceneActionEvent>("sc:object:modified", {
       detail: {

@@ -4,20 +4,12 @@ import type Konva from "konva";
 import isKeyDownInterceptable from "../../utils/isKeyDownInterceptable";
 import undoSceneAction from "./store/actions/undoSceneAction";
 import redoSceneAction from "./store/actions/redoSceneAction";
-import { autorun, toJS } from "mobx";
 import type { SceneActionEvent } from "../sceneActions/types";
 import nodesToJSON from "../../utils/nodes/nodesToJSON";
 import getNodeTransformProps from "../sceneTransformer/getNodeTransformProps";
 
 export default function useSceneHistory(stageRef: MutableRefObject<Konva.Stage | null>) {
   useEffect(() => {
-    autorun(
-      () => {
-        console.log("Scene History UNDO changed", toJS(SceneHistoryStore.undoHistory));
-        console.log("Scene History REDO changed", toJS(SceneHistoryStore.redoHistory));
-      },
-      { delay: 1000 },
-    );
     const stage = stageRef.current;
     if (!stage) return;
 

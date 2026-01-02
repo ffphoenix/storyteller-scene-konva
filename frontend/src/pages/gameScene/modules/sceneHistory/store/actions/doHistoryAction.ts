@@ -27,7 +27,6 @@ export const doHistoryAction = (
   const actionMap = queue === "undo" ? undoMapByAction : redoMapByAction;
   const actionFunction = actionMap[action];
   if (!action) throw new Error(`Cannot perform action ${action}`);
-  console.log("doHistoryAction", action, nodes, layerId);
   actionFunction();
 };
 export default doHistoryAction;

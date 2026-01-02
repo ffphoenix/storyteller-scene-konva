@@ -7,9 +7,8 @@ const fireObjectRemovedEvent = (
   layerId: string,
   event?: Konva.KonvaEventObject<MouseEvent>,
 ) => {
-  console.log("fireObjectRemovedEvent", producer, nodes, layerId);
   document.dispatchEvent(
-    new CustomEvent<SceneActionEvent>("sc:object:removed", { detail: { producer, nodes, e: event, layerId } }),
+    new CustomEvent<SceneActionEvent>("sc:object:removed", { detail: { producer, nodes, event: event?.evt, layerId } }),
   );
 };
 export default fireObjectRemovedEvent;

@@ -1,7 +1,6 @@
 import Konva from "konva";
 
 const getNodeTransformProps = (node: Konva.Node) => {
-  console.log("abs ---<>", node.getAbsolutePosition());
   return {
     x: node.x(),
     y: node.y(),

@@ -10,7 +10,6 @@ const undoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
 
   const historyItem = SceneHistoryStore.latestUndoHistoryItem;
   if (!historyItem) return;
-  console.log("undo history item", toJS(historyItem));
   if (historyItem.action === "modify" && !historyItem.originalGroupProps) return;
 
   try {

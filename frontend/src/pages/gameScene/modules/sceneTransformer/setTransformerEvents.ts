@@ -9,15 +9,7 @@ const setTransformerEvents = (transformer: Konva.Transformer) => {
   transformer.on("transformend dragend", (e) => {
     const nodes = e.target as Konva.Shape;
     const transformerNode = e.currentTarget as Konva.Transformer;
-    console.log(
-      "=============transformend",
-      getNodeTransformProps(e.target as Konva.Node),
-      getNodeTransformProps(transformerNode),
-      e.target.getType(),
-      e.currentTarget.getType(),
-      e.target,
-      e.currentTarget,
-    );
+
     fireObjectModifiedEvent(
       "self",
       e.type as ModifyActionType,

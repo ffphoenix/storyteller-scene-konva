@@ -35,7 +35,6 @@ const sceneHistoryStore = makeAutoObservable<SceneHistory>({
   undoHistory: [],
   redoHistory: [],
   addUndoHistoryItem: (action, eventItem: EventItem, isRedoAction = false) => {
-    console.log("addUndoHistoryItem");
     sceneHistoryStore.undoHistory.push({ ...eventItem, action });
 
     if (sceneHistoryStore.undoHistory.length > sceneHistoryStore.maxHistoryLength) {

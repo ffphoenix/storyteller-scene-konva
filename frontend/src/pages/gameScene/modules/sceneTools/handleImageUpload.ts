@@ -1,5 +1,6 @@
 import Konva from "konva";
 import getActiveLayer from "./utils/getActiveLayer";
+import fireObjectAddedEvent from "../sceneActions/catcher/fireObjectAddedEvent";
 
 const handleImageUpload = (stage: Konva.Stage, file: File) => {
   if (!file.type.startsWith("image/")) return;
@@ -37,6 +38,7 @@ const handleImageUpload = (stage: Konva.Stage, file: File) => {
       if (layer) {
         layer.add(konvaImage);
         layer.draw();
+        fireObjectAddedEvent("self", konvaImage);
       }
     };
   };
