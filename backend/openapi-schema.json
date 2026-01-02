@@ -61,6 +61,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "users"
         ]
@@ -113,6 +118,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "users"
         ]
@@ -154,6 +164,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "users"
         ]
@@ -214,6 +229,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "users"
         ]
@@ -282,6 +302,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "users"
         ]
@@ -333,6 +358,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "users"
         ]

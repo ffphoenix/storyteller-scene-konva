@@ -24,6 +24,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../../common/decorators/user.decorator';
 
 @ApiTags('users')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
@@ -49,7 +50,6 @@ export class UsersController {
   }
 
   @Get('me')
-  // @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor)
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns current authenticated user', type: User })

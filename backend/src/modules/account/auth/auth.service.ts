@@ -63,25 +63,31 @@ export class AuthService {
     return user;
   }
 
-  generateAccessToken(user: User): string {
+  private generateAccessToken(user: User): string {
     const payload: TokenPayload = { userId: user.id, email: user.email };
+    const secret = this.configService.get<string>('JWT_SECRET');
+    if (!secret) throw new Error('JWT_SECRET is not set');
+
     return this.jwtService.sign<TokenPayload>(payload, {
-      secret: this.configService.get<string>('JWT_SECRET', 'your-secret-key'),
-      expiresIn: this.configService.get<StringValue>('JWT_EXPIRES_IN', '60s'),
+      secret: secret,
+      expiresIn: this.configService.get<StringValue>('JWT_EXPIRES_IN', '300s'),
     });
   }
 
-  private createRefreshToken(user: User): string {
+  private generateRefreshToken(user: User): string {
     const payload: TokenPayload = { userId: user.id, email: user.email };
+    const secret = this.configService.get<string>('JWT_REFRESH_SECRET');
+    if (!secret) throw new Error('JWT_REFRESH_SECRET is not set');
+
     return this.jwtService.sign<TokenPayload>(payload, {
-      secret: this.configService.get<string>('JWT_REFRESH_TOKEN_SECRET', 'your-refresh-secret-key'),
+      secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
       expiresIn: this.configService.get<StringValue>('JWT_REFRESH_EXPIRES_IN', '7d'),
     });
   }
 
   async issueTokens(user: User): Promise<{ accessToken: string; refreshToken: string }> {
     const accessToken = this.generateAccessToken(user);
-    const refreshToken = this.createRefreshToken(user);
+    const refreshToken = this.generateRefreshToken(user);
     await this.usersService.update(user.id, { refreshToken: refreshToken });
     return { accessToken, refreshToken };
   }
@@ -92,7 +98,7 @@ export class AuthService {
       return null;
     }
     const accessToken = this.generateAccessToken(user);
-    const refreshToken = this.createRefreshToken(user);
+    const refreshToken = this.generateRefreshToken(user);
     await this.usersService.update(user.id, { refreshToken: refreshToken });
     return { accessToken, refreshToken };
   }

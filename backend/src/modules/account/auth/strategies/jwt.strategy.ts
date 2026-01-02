@@ -6,15 +6,18 @@ import { UsersService } from '../../users/users.service';
 import { TokenPayload } from '../interfaces/token-payload.interface';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
   ) {
+    const secretConfig = configService.get<string>('JWT_SECRET');
+    if (!secretConfig) throw new Error('JWT_SECRET is not set');
+
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET', 'your-secret-key'),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: secretConfig,
     });
   }
 

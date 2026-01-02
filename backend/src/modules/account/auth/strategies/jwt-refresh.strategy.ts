@@ -13,7 +13,8 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     configService: ConfigService,
     private readonly authService: AuthService,
   ) {
-    const secretConfig = configService.get<string>('JWT_REFRESH_TOKEN_SECRET', 'your-refresh-secret-key');
+    const secretConfig = configService.get<string>('JWT_REFRESH_SECRET');
+    if (!secretConfig) throw new Error('JWT_REFRESH_SECRET is not set');
 
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
