@@ -1,6 +1,7 @@
 import Konva from "konva";
 import getActiveLayer from "./utils/getActiveLayer";
 import fireObjectAddedEvent from "../sceneActions/catcher/fireObjectAddedEvent";
+import { generateUUID } from "../../utils/uuid";
 
 const handleImageUpload = (stage: Konva.Stage, file: File) => {
   if (!file.type.startsWith("image/")) return;
@@ -22,6 +23,8 @@ const handleImageUpload = (stage: Konva.Stage, file: File) => {
       const scale = Math.min(maxW / imageWidth, maxH / imageHeight, 1);
 
       const konvaImage = new Konva.Image({
+        id: generateUUID(),
+        name: "object image",
         image: imgObject,
         x: sw / 2,
         y: sh / 2,
