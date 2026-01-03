@@ -9,6 +9,8 @@ import getTransformer from "../../sceneTransformer/getTransformer";
 import clearTransformerNodesSelection from "../../sceneTransformer/clearTransformerNodesSelection";
 import isKeyDownInterceptable from "../../../utils/isKeyDownInterceptable";
 import { handleDeleteSelected } from "./select/handleDeleteSelected";
+import { handleCopySelected } from "./select/handleCopySelected";
+import { handlePasteSelected } from "./select/handlePasteSelected";
 
 const getSelectHandlers = (stage: Stage): MouseHandlers => {
   const activeLayer = getActiveLayer(stage);
@@ -100,6 +102,16 @@ const getSelectHandlers = (stage: Stage): MouseHandlers => {
 
     if (e.code === "Escape") {
       clearTransformerNodesSelection(stage);
+    }
+
+    const isCtrlOrMeta = e.ctrlKey || e.metaKey;
+    if (isCtrlOrMeta && e.code === "KeyC") {
+      handleCopySelected(stage);
+      e.preventDefault();
+    }
+    if (isCtrlOrMeta && e.code === "KeyV") {
+      handlePasteSelected(stage);
+      e.preventDefault();
     }
   };
 

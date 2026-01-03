@@ -50,9 +50,7 @@ const createGridLayer = () => {
   gridRect.width(50 * 70);
   gridRect.height(50 * 70);
   gridRect.cache();
-  gridRect.moveToTop();
   layer.add(gridRect);
-  layer.moveToTop();
   layer.draw();
 
   return layer;
