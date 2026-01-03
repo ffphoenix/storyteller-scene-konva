@@ -85,7 +85,7 @@ const getDrawArrowHandlers = (stage: Stage): MouseHandlers => {
     const group = new Konva.Group({
       id: generateUUID(),
       draggable: false,
-      name: "object",
+      name: "object arrow",
     });
 
     const finalLine = new Konva.Line({

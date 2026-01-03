@@ -1,5 +1,6 @@
 import Konva from "konva";
 
+// TODO: try to do the same with SVG
 const createCanvasGrid = (size: number) => {
   const canvas = document.createElement("canvas");
 
@@ -48,6 +49,7 @@ const createGridLayer = () => {
   console.log(gridRect.toJSON());
   gridRect.width(50 * 70);
   gridRect.height(50 * 70);
+  gridRect.cache();
   gridRect.moveToTop();
   layer.add(gridRect);
   layer.moveToTop();

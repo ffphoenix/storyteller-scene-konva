@@ -17,7 +17,7 @@ const useStage = () => {
       height: containerRef.current.clientHeight,
     });
 
-    const gridLayer = createGridLayer(stage);
+    const gridLayer = createGridLayer();
     stage.add(gridLayer);
 
     const layerUuid = generateUUID();

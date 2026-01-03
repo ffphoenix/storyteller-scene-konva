@@ -7,6 +7,8 @@ import { onMouseUpSelectByClick } from "./select/onMouseUpSelectByClick";
 import { onMouseUpSelectByArea } from "./select/onMouseUpSelectByArea";
 import getTransformer from "../../sceneTransformer/getTransformer";
 import clearTransformerNodesSelection from "../../sceneTransformer/clearTransformerNodesSelection";
+import isKeyDownInterceptable from "../../../utils/isKeyDownInterceptable";
+import { handleDeleteSelected } from "./select/handleDeleteSelected";
 
 const getSelectHandlers = (stage: Stage): MouseHandlers => {
   const activeLayer = getActiveLayer(stage);
@@ -87,6 +89,23 @@ const getSelectHandlers = (stage: Stage): MouseHandlers => {
     isSelectingByClick = false;
     startPosition = null;
   };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (!isKeyDownInterceptable(e, stage)) return;
+    if (e.code === "Delete" || e.code === "Backslash") {
+      handleDeleteSelected(stage);
+      e.preventDefault();
+      return;
+    }
+
+    if (e.code === "Escape") {
+      clearTransformerNodesSelection(stage);
+    }
+  };
+
+  document.addEventListener("keydown", onKeyDown);
+
+  // TODO: research how to handle mousemove outside of window
   document.addEventListener("mousemove", onMouseMoveWindow);
   document.addEventListener("mouseup", onMouseUpWindow);
 
@@ -101,6 +120,7 @@ const getSelectHandlers = (stage: Stage): MouseHandlers => {
       stage.batchDraw();
       document.removeEventListener("mousemove", onMouseMoveWindow);
       document.removeEventListener("mouseup", onMouseUpWindow);
+      document.removeEventListener("keydown", onKeyDown);
     },
   };
 };

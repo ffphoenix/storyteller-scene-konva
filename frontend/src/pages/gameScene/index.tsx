@@ -5,7 +5,6 @@ import useStage from "./modules/sceneStage/useStage";
 import ZoomControls from "./modules/sceneZoomControls/components/ZoomControls";
 import useWheelZoomHandler from "./modules/sceneZoomControls/useWheelZoomHandler";
 import useSceneTools from "./modules/sceneTools/useSceneTools";
-import useKeyboardHotkeys from "./hooks/useKeyboardHotkeys";
 import useSceneHistory from "./modules/sceneHistory/useSceneHistory";
 import SceneContextMenu from "./modules/sceneTools/components/SceneContextMenu";
 
@@ -13,7 +12,6 @@ const GameScenePage: React.FC = () => {
   const { stageRef, containerRef } = useStage();
   useWheelZoomHandler(stageRef);
   useSceneTools(stageRef);
-  useKeyboardHotkeys(stageRef);
   useSceneHistory(stageRef);
 
   console.log("GameScenePage rendered");

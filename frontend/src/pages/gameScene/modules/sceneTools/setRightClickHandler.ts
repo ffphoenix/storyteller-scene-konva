@@ -3,6 +3,7 @@ import SceneStore, { type Tool } from "../../store/SceneStore";
 import type { Stage } from "konva/lib/Stage";
 import { toJS } from "mobx";
 
+// TODO: refactor name and place of this function
 const setRightClickHandler = (stage: Stage) => {
   let isPanning = false;
   let rightButtonDown = false;
@@ -64,7 +65,7 @@ const setRightClickHandler = (stage: Stage) => {
     }
     SceneStore.setContextMenu(true, event.clientX, event.clientY);
   };
-
+  // TODO: add mouse out of window handler
   stage.on("mousedown", onMouseDown);
   stage.on("mousemove", onMouseMove);
   stage.on("mouseup", onMouseUp);
