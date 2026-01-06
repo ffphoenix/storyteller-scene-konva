@@ -466,6 +466,202 @@
           "auth"
         ]
       }
+    },
+    "/api/games": {
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The game has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new game",
+        "tags": [
+          "games"
+        ]
+      },
+      "get": {
+        "operationId": "findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all games for current user",
+        "tags": [
+          "games"
+        ]
+      }
+    },
+    "/api/games/{id}": {
+      "put": {
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGameDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The game has been successfully updated."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update game name",
+        "tags": [
+          "games"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The game has been successfully deleted."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a game",
+        "tags": [
+          "games"
+        ]
+      }
+    },
+    "/api/games/{id}/start": {
+      "post": {
+        "operationId": "start",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The game has been successfully started."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Start a game",
+        "tags": [
+          "games"
+        ]
+      }
+    },
+    "/api/games/{idOrShortUrl}": {
+      "get": {
+        "operationId": "findOne",
+        "parameters": [
+          {
+            "name": "idOrShortUrl",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get game data by ID or short URL",
+        "tags": [
+          "games"
+        ]
+      }
     }
   },
   "info": {
@@ -685,6 +881,67 @@
         "required": [
           "accessToken",
           "refreshToken"
+        ]
+      },
+      "CreateGameDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "My Awesome Game"
+          },
+          "shortUrl": {
+            "type": "string",
+            "example": "abcdefgh",
+            "description": "Exactly 8 characters"
+          }
+        },
+        "required": [
+          "name",
+          "shortUrl"
+        ]
+      },
+      "UpdateGameDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "New Game Name"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "GameResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "1"
+          },
+          "shortUrl": {
+            "type": "string",
+            "example": "abcdefgh"
+          },
+          "name": {
+            "type": "string",
+            "example": "My Awesome Game"
+          },
+          "status": {
+            "type": "string",
+            "example": "CREATED",
+            "enum": [
+              "CREATED",
+              "STARTED"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "shortUrl",
+          "name",
+          "status"
         ]
       }
     }
