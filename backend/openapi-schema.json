@@ -682,6 +682,312 @@
           "games"
         ]
       }
+    },
+    "/api/api/game-scenes": {
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameSceneDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The scene has been successfully created."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new game scene",
+        "tags": [
+          "game-scenes"
+        ]
+      },
+      "get": {
+        "operationId": "findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get paginated list of game scenes",
+        "tags": [
+          "game-scenes"
+        ]
+      }
+    },
+    "/api/api/game-scenes/{id}": {
+      "get": {
+        "operationId": "findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get full scene by id",
+        "tags": [
+          "game-scenes"
+        ]
+      },
+      "patch": {
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGameSceneDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update scene metadata and grid settings",
+        "tags": [
+          "game-scenes"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a scene",
+        "tags": [
+          "game-scenes"
+        ]
+      }
+    },
+    "/api/api/game-scenes/{sceneId}/layers": {
+      "post": {
+        "operationId": "createLayer",
+        "parameters": [
+          {
+            "name": "sceneId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSceneLayerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new layer in a scene",
+        "tags": [
+          "game-scenes"
+        ]
+      },
+      "get": {
+        "operationId": "findLayers",
+        "parameters": [
+          {
+            "name": "sceneId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List layers for a scene",
+        "tags": [
+          "game-scenes"
+        ]
+      }
+    },
+    "/api/api/game-scenes/{sceneId}/layers/{layerId}": {
+      "patch": {
+        "operationId": "updateLayer",
+        "parameters": [
+          {
+            "name": "sceneId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layerId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSceneLayerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update layer",
+        "tags": [
+          "game-scenes"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteLayer",
+        "parameters": [
+          {
+            "name": "sceneId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layerId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete layer",
+        "tags": [
+          "game-scenes"
+        ]
+      }
     }
   },
   "info": {
@@ -1011,6 +1317,110 @@
           "name",
           "status"
         ]
+      },
+      "CreateGameSceneDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "stageWidth": {
+            "type": "number"
+          },
+          "stageHeight": {
+            "type": "number"
+          },
+          "backgroundColor": {
+            "type": "string"
+          },
+          "gridType": {
+            "type": "string",
+            "enum": [
+              "square"
+            ]
+          },
+          "gridCellSize": {
+            "type": "number"
+          },
+          "gridMetricSystem": {
+            "type": "string",
+            "enum": [
+              "Feet",
+              "Meters",
+              "Miles",
+              "Squares"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateGameSceneDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "stageWidth": {
+            "type": "number"
+          },
+          "stageHeight": {
+            "type": "number"
+          },
+          "backgroundColor": {
+            "type": "string"
+          },
+          "gridType": {
+            "type": "string",
+            "enum": [
+              "square"
+            ]
+          },
+          "gridCellSize": {
+            "type": "number"
+          },
+          "gridMetricSystem": {
+            "type": "string",
+            "enum": [
+              "Feet",
+              "Meters",
+              "Miles",
+              "Squares"
+            ]
+          }
+        }
+      },
+      "CreateSceneLayerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isLocked": {
+            "type": "boolean"
+          },
+          "isVisible": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateSceneLayerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isLocked": {
+            "type": "boolean"
+          },
+          "isVisible": {
+            "type": "boolean"
+          }
+        }
       }
     }
   }
