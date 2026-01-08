@@ -4,7 +4,7 @@ import GuestLayout from "../layouts/GuestLayout";
 import GameLayout from "../layouts/GameLayout";
 import { redirect, type RouteObject } from "react-router";
 import Dashboard from "../pages/Dashboard";
-import GamePage from "../pages/game";
+import GameRoute from "../pages/game/route";
 import GameScenePage from "../pages/gameScene";
 import { tokenManager } from "../utils/apiClient";
 
@@ -19,22 +19,14 @@ const routes: RouteObject[] = [
     },
     Component: Layout,
     children: [
+      GameRoute,
       {
         path: "/",
         Component: Dashboard,
       },
     ],
   },
-  {
-    path: "game",
-    Component: Layout,
-    children: [
-      {
-        path: "",
-        Component: GamePage,
-      },
-    ],
-  },
+
   {
     path: "play",
     Component: GameLayout,
