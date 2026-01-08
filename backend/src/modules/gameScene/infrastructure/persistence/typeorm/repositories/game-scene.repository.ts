@@ -46,6 +46,7 @@ export class GameSceneRepository implements IGameSceneRepository {
 
     return new GameScene(
       entity.id,
+      entity.gameId,
       entity.name,
       entity.stageJSON,
       entity.stageWidth,
@@ -61,6 +62,7 @@ export class GameSceneRepository implements IGameSceneRepository {
   private toEntity(gameScene: GameScene): GameSceneEntity {
     const entity = new GameSceneEntity();
     entity.id = gameScene.getId();
+    entity.gameId = gameScene.getGameId();
     entity.name = gameScene.getName();
     entity.stageJSON = gameScene.getStageJSON();
     entity.stageWidth = gameScene.getStageWidth();

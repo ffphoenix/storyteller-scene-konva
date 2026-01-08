@@ -4,6 +4,11 @@ import { GridMetricSystem, GridType } from '../../../domain/aggregates/game-scen
 
 export class CreateGameSceneDto {
   @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  gameId: number;
+
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   name: string;

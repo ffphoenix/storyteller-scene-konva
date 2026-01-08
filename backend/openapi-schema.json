@@ -1321,6 +1321,9 @@
       "CreateGameSceneDto": {
         "type": "object",
         "properties": {
+          "gameId": {
+            "type": "number"
+          },
           "name": {
             "type": "string"
           },
@@ -1353,6 +1356,7 @@
           }
         },
         "required": [
+          "gameId",
           "name"
         ]
       },

@@ -31,6 +31,7 @@ export class GameSceneController {
   async create(@Body() dto: CreateGameSceneDto) {
     return this.commandBus.execute(
       new CreateGameSceneCommand(
+        dto.gameId,
         dto.name,
         dto.stageWidth,
         dto.stageHeight,

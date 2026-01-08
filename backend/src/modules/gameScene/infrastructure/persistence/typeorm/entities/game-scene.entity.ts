@@ -1,17 +1,25 @@
-import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { GameSceneLayerEntity } from './game-scene-layer.entity';
 import { GridMetricSystem, GridType } from '../../../../domain/aggregates/game-scene.types';
+import { GameEntity } from '../../../../../game/infrastructure/persistence/entities/game.entity';
 
 @Entity('game_scenes')
 export class GameSceneEntity {
   @PrimaryColumn('uuid')
   id: string;
 
+  @Column('int')
+  gameId: number;
+
+  @ManyToOne(() => GameEntity)
+  @JoinColumn({ name: 'gameId' })
+  game: GameEntity;
+
   @Column()
   name: string;
 
-  @Column('jsonb')
-  stageJSON: any;
+  @Column({ type: 'jsonb', nullable: false })
+  stageJSON: object;
 
   @Column('int')
   stageWidth: number;

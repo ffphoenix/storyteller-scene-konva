@@ -5,6 +5,7 @@ import { SceneObjectAdded, SceneObjectModified, SceneObjectDeleted } from '../ev
 
 export class GameScene extends AggregateRoot {
   private id: string;
+  private gameId: number;
   private name: string;
   private stageJSON: any;
   private stageWidth: number;
@@ -17,6 +18,7 @@ export class GameScene extends AggregateRoot {
 
   constructor(
     id: string,
+    gameId: number,
     name: string,
     stageJSON: any,
     stageWidth: number,
@@ -29,6 +31,7 @@ export class GameScene extends AggregateRoot {
   ) {
     super();
     this.id = id;
+    this.gameId = gameId;
     this.name = name;
     this.stageJSON = stageJSON || { layers: [] };
     this.stageWidth = stageWidth;
@@ -42,6 +45,7 @@ export class GameScene extends AggregateRoot {
 
   static create(
     id: string,
+    gameId: number,
     name: string,
     stageWidth: number = 1920,
     stageHeight: number = 1080,
@@ -77,9 +81,19 @@ export class GameScene extends AggregateRoot {
       ],
     };
 
-    return new GameScene(id, name, initialStageJSON, stageWidth, stageHeight, backgroundColor, gridType, gridCellSize, gridMetricSystem, [
-      defaultLayer,
-    ]);
+    return new GameScene(
+      id,
+      gameId,
+      name,
+      initialStageJSON,
+      stageWidth,
+      stageHeight,
+      backgroundColor,
+      gridType,
+      gridCellSize,
+      gridMetricSystem,
+      [defaultLayer],
+    );
   }
 
   updateMetadata(data: {
@@ -196,6 +210,9 @@ export class GameScene extends AggregateRoot {
   // Getters
   getId(): string {
     return this.id;
+  }
+  getGameId(): number {
+    return this.gameId;
   }
   getName(): string {
     return this.name;

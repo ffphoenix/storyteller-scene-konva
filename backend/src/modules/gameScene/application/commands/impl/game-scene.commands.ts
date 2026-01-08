@@ -2,6 +2,7 @@ import { GridMetricSystem, GridType } from '../../../domain/aggregates/game-scen
 
 export class CreateGameSceneCommand {
   constructor(
+    public readonly gameId: number,
     public readonly name: string,
     public readonly stageWidth?: number,
     public readonly stageHeight?: number,

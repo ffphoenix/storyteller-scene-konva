@@ -16,6 +16,7 @@ export class CreateGameSceneHandler implements ICommandHandler<CreateGameSceneCo
     const gameScene = this.publisher.mergeObjectContext(
       GameScene.create(
         id,
+        command.gameId,
         command.name,
         command.stageWidth,
         command.stageHeight,
