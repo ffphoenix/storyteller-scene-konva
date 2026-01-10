@@ -15,7 +15,10 @@ type Props = {
 
 const ToolMenu: React.FC<Props> = ({ stageRef }) => {
   const [gridPosition, setGridPosition] = React.useState<"top" | "bottom">("bottom");
-  const printCanvas = () => console.log("Print stage", JSON.parse(stageRef.current?.toJSON() ?? "{}"));
+  const printCanvas = () => {
+    console.log("Print stage", JSON.parse(stageRef.current?.toJSON() ?? "{}"));
+    console.log("Print stage", stageRef.current?.toJSON());
+  };
   const onClear = () => {
     const stage = stageRef.current;
     if (!stage) return;

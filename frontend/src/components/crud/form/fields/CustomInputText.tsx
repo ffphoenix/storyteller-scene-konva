@@ -31,13 +31,18 @@ export default <T,>({ ...props }: CustomInputTextProps<T>) => {
     invalid: isValid,
   };
   return (
-    <div className="flex-auto mb-2" key={props.dataKey}>
+    <div className="flex-auto mb-2" key={`text-input-${props.dataKey}`}>
       <label htmlFor={props.dataKey} className="font-bold block">
         {props.label}
       </label>
       <InputText {...textInputProps} />
       {props.helpText && <small id={props.dataKey + "-help"}>{props.helpText}</small>}
-      {props.errors && props.errors.map((error) => <small className="p-error p-message-error">{error.message}</small>)}
+      {props.errors &&
+        props.errors.map((error) => (
+          <small className="p-error p-message-error" key={"error-" + error.field}>
+            {error.message}
+          </small>
+        ))}
     </div>
   );
 };

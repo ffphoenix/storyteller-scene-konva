@@ -5,7 +5,7 @@ const getDefaultSystem = () => ({
   id: 0,
   name: "",
   status: "CREATED" as "CREATED" | "STARTED",
-  shortUrl: "",
+  shortUrl: Math.random().toString(36).substring(2, 10),
 });
 const SystemsStorage = createDataStorage<GameResponseDto>(getDefaultSystem);
 
