@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { GameSceneLayer } from '../entities/game-scene-layer.entity';
 import { GridMetricSystem, GridType } from './game-scene.types';
-import { SceneObjectAdded, SceneObjectModified, SceneObjectDeleted } from '../events/scene-object.events';
+import { SceneObjectAddedEvent, SceneObjectModifiedEvent, SceneObjectDeletedEvent } from '../events/scene-object.events';
 
 export class GameScene extends AggregateRoot {
   private id: string;
@@ -121,82 +121,82 @@ export class GameScene extends AggregateRoot {
   }
 
   addLayer(id: string, name: string, isLocked: boolean = false, isVisible: boolean = true): void {
-    if (this.layers.find((l) => l.id === id)) {
-      throw new Error('Layer ID already exists');
-    }
-    const order = this.layers.length;
-    const newLayer = new GameSceneLayer(id, name, isLocked, isVisible, order);
-    this.layers.push(newLayer);
-
-    if (!this.stageJSON.children) this.stageJSON.children = [];
-    this.stageJSON.children.push({
-      id: newLayer.id,
-      name: newLayer.name,
-      objects: [],
-    });
+    // if (this.layers.find((l) => l.id === id)) {
+    //   throw new Error('Layer ID already exists');
+    // }
+    // const order = this.layers.length;
+    // const newLayer = new GameSceneLayer(id, name, isLocked, isVisible, order);
+    // this.layers.push(newLayer);
+    //
+    // if (!this.stageJSON.children) this.stageJSON.children = [];
+    // this.stageJSON.children.push({
+    //   id: newLayer.id,
+    //   name: newLayer.name,
+    //   objects: [],
+    // });
   }
 
   updateLayer(id: string, name?: string, isLocked?: boolean, isVisible?: boolean): void {
-    const layer = this.layers.find((l) => l.id === id);
-    if (!layer) throw new Error('Layer not found');
-
-    layer.update(name, isLocked, isVisible);
-
-    const stageLayer = this.stageJSON.children.find((l: any) => l.id === id);
-    if (stageLayer) {
-      if (name !== undefined) stageLayer.name = name;
-    }
+    // const layer = this.layers.find((l) => l.id === id);
+    // if (!layer) throw new Error('Layer not found');
+    //
+    // layer.update(name, isLocked, isVisible);
+    //
+    // const stageLayer = this.stageJSON.children.find((l: any) => l.id === id);
+    // if (stageLayer) {
+    //   if (name !== undefined) stageLayer.name = name;
+    // }
   }
 
   deleteLayer(id: string): void {
-    const layerIndex = this.layers.findIndex((l) => l.id === id);
-    if (layerIndex === -1) throw new Error('Layer not found');
-
-    const stageLayer = this.stageJSON.layers.find((l: any) => l.id === id);
-    if (stageLayer && stageLayer.objects && stageLayer.objects.length > 0) {
-      throw new Error('Cannot delete layer that contains objects');
-    }
-
-    this.layers.splice(layerIndex, 1);
-    this.stageJSON.layers = this.stageJSON.layers.filter((l: any) => l.id !== id);
+    // const layerIndex = this.layers.findIndex((l) => l.id === id);
+    // if (layerIndex === -1) throw new Error('Layer not found');
+    //
+    // const stageLayer = this.stageJSON.layers.find((l: any) => l.id === id);
+    // if (stageLayer && stageLayer.objects && stageLayer.objects.length > 0) {
+    //   throw new Error('Cannot delete layer that contains objects');
+    // }
+    //
+    // this.layers.splice(layerIndex, 1);
+    // this.stageJSON.layers = this.stageJSON.layers.filter((l: any) => l.id !== id);
   }
 
   addObject(layerId: string, objectId: string, payload: any): void {
-    const stageLayer = this.stageJSON.layers.find((l: any) => l.id === layerId);
-    if (!stageLayer) throw new Error('Layer not found in stageJSON');
-
-    if (!stageLayer.objects) stageLayer.objects = [];
-    if (stageLayer.objects.find((o: any) => o.id === objectId)) {
-      throw new Error('Object ID already exists');
-    }
-
-    stageLayer.objects.push({ ...payload, id: objectId });
-
-    this.apply(new SceneObjectAdded(this.id, layerId, objectId, payload, new Date()));
+    // const stageLayer = this.stageJSON.layers.find((l: any) => l.id === layerId);
+    // if (!stageLayer) throw new Error('Layer not found in stageJSON');
+    //
+    // if (!stageLayer.objects) stageLayer.objects = [];
+    // if (stageLayer.objects.find((o: any) => o.id === objectId)) {
+    //   throw new Error('Object ID already exists');
+    // }
+    //
+    // stageLayer.objects.push({ ...payload, id: objectId });
+    //
+    // this.apply(new SceneObjectAddedEvent(this.id, layerId, objectId, payload, new Date()));
   }
 
   modifyObject(layerId: string, objectId: string, payload: any): void {
-    const stageLayer = this.stageJSON.layers.find((l: any) => l.id === layerId);
-    if (!stageLayer) throw new Error('Layer not found in stageJSON');
-
-    const objectIndex = stageLayer.objects.findIndex((o: any) => o.id === objectId);
-    if (objectIndex === -1) throw new Error('Object not found in layer');
-
-    stageLayer.objects[objectIndex] = { ...stageLayer.objects[objectIndex], ...payload, id: objectId };
-
-    this.apply(new SceneObjectModified(this.id, layerId, objectId, payload, new Date()));
+    // const stageLayer = this.stageJSON.layers.find((l: any) => l.id === layerId);
+    // if (!stageLayer) throw new Error('Layer not found in stageJSON');
+    //
+    // const objectIndex = stageLayer.objects.findIndex((o: any) => o.id === objectId);
+    // if (objectIndex === -1) throw new Error('Object not found in layer');
+    //
+    // stageLayer.objects[objectIndex] = { ...stageLayer.objects[objectIndex], ...payload, id: objectId };
+    //
+    // this.apply(new SceneObjectModifiedEvent(this.id, layerId, objectId, payload, new Date()));
   }
 
   deleteObject(layerId: string, objectId: string): void {
-    const stageLayer = this.stageJSON.layers.find((l: any) => l.id === layerId);
-    if (!stageLayer) throw new Error('Layer not found in stageJSON');
-
-    const objectIndex = stageLayer.objects.findIndex((o: any) => o.id === objectId);
-    if (objectIndex === -1) throw new Error('Object not found in layer');
-
-    stageLayer.objects.splice(objectIndex, 1);
-
-    this.apply(new SceneObjectDeleted(this.id, layerId, objectId, new Date()));
+    // const stageLayer = this.stageJSON.layers.find((l: any) => l.id === layerId);
+    // if (!stageLayer) throw new Error('Layer not found in stageJSON');
+    //
+    // const objectIndex = stageLayer.objects.findIndex((o: any) => o.id === objectId);
+    // if (objectIndex === -1) throw new Error('Object not found in layer');
+    //
+    // stageLayer.objects.splice(objectIndex, 1);
+    //
+    // this.apply(new SceneObjectDeletedEvent(this.id, layerId, objectId, new Date()));
   }
 
   // Getters

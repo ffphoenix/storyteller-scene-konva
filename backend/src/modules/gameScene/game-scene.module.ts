@@ -27,7 +27,7 @@ import {
   GetGameSceneByIdHandler,
   GetSceneLayersHandler,
 } from './application/queries/handlers/game-scene-query.handlers';
-import { GameSceneKafkaPublisher, GameSceneEventsHandler } from './infrastructure/kafka/game-scene-kafka.publisher';
+import { GameSceneEventsHandler } from './infrastructure/kafka/game-scene-kafka.publisher';
 import { CreateDefaultSceneOnGameCreatedHandler } from './application/events/handlers/game-created.handlers';
 
 const CommandHandlers = [
@@ -55,7 +55,6 @@ const EventHandlers = [GameSceneEventsHandler, CreateDefaultSceneOnGameCreatedHa
       useClass: GameSceneRepository,
     },
     GameSceneGateway,
-    GameSceneKafkaPublisher,
     ...CommandHandlers,
     ...QueryHandlers,
     ...EventHandlers,

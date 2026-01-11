@@ -7,7 +7,7 @@ import typeorm from './config/typeorm';
 import { UsersModule } from './modules/account/users/users.module';
 import { AuthModule } from './modules/account/auth/auth.module';
 import { GameModule } from './modules/game/game.module';
-import { GameSceneModule } from './modules/gameScene/game-scene.module';
+import { MessagingModule } from './modules/massaging/messaging.module';
 
 @Module({
   imports: [
@@ -22,10 +22,11 @@ import { GameSceneModule } from './modules/gameScene/game-scene.module';
         return configService.get('typeorm');
       },
     }),
+    MessagingModule,
     UsersModule,
     AuthModule,
     GameModule,
-    GameSceneModule,
+    // GameSceneModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,12 +8,10 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { CommandBus } from '@nestjs/cqrs';
-import {
-  AddSceneObjectCommand,
-  ModifySceneObjectCommand,
-  DeleteSceneObjectCommand,
-} from '../../application/commands/impl/scene-object.commands';
+import { AddSceneObjectCommand } from '../../application/commands/impl/add-scene-object.command';
+import { ModifySceneObjectCommand } from '../../application/commands/impl/modify-scene-object.command';
+import { DeleteSceneObjectCommand } from '../../application/commands/impl/delete-scene-object.command';
+import { ICommandBus } from '../../../../common/interfaces/messaging.interfaces';
 
 @WebSocketGateway({
   namespace: '/ws/game-scenes',
@@ -25,7 +23,7 @@ export class GameSceneGateway implements OnGatewayConnection, OnGatewayDisconnec
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly commandBus: ICommandBus) {}
 
   handleConnection(client: Socket) {
     const sceneId = client.handshake.query.sceneId as string;

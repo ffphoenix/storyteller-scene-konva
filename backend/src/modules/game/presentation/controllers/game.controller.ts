@@ -1,8 +1,11 @@
-import { Controller, Post, Body, Put, Param, Delete, Get, UseGuards, Req, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Put, Param, Delete, Get, UseGuards, HttpStatus } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateGameDto, UpdateGameDto, GameResponseDto } from '../../application/dto/game.dto';
-import { CreateGameCommand, ModifyGameCommand, StartGameCommand, DeleteGameCommand } from '../../application/commands/game.commands';
+import { CreateGameCommand } from '../../application/commands/impl/create-game.command';
+import { ModifyGameCommand } from '../../application/commands/impl/modify-game.command';
+import { StartGameCommand } from '../../application/commands/impl/start-game.command';
+import { DeleteGameCommand } from '../../application/commands/impl/delete-game.command';
 import { GetMyGamesQuery, GetGameDataQuery } from '../../application/queries/game.queries';
 import { JwtAuthGuard } from '../../../account/auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../../../common/decorators/user.decorator';

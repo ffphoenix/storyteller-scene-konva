@@ -1,19 +1,16 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete, Query, UseGuards } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateGameSceneDto, UpdateGameSceneDto, CreateSceneLayerDto, UpdateSceneLayerDto } from './dtos/game-scene.dtos';
-import {
-  CreateGameSceneCommand,
-  UpdateGameSceneCommand,
-  DeleteGameSceneCommand,
-} from '../../application/commands/impl/game-scene.commands';
-import {
-  CreateSceneLayerCommand,
-  UpdateSceneLayerCommand,
-  DeleteSceneLayerCommand,
-} from '../../application/commands/impl/scene-layer.commands';
+import { CreateGameSceneCommand } from '../../application/commands/impl/create-game-scene.command';
+import { UpdateGameSceneCommand } from '../../application/commands/impl/update-game-scene.command';
+import { DeleteGameSceneCommand } from '../../application/commands/impl/delete-game-scene.command';
+import { CreateSceneLayerCommand } from '../../application/commands/impl/create-scene-layer.command';
+import { UpdateSceneLayerCommand } from '../../application/commands/impl/update-scene-layer.command';
+import { DeleteSceneLayerCommand } from '../../application/commands/impl/delete-scene-layer.command';
 import { GetGameScenesQuery, GetGameSceneByIdQuery, GetSceneLayersQuery } from '../../application/queries/impl/game-scene.queries';
 import { JwtAuthGuard } from '../../../account/auth/guards/jwt-auth.guard';
+import { ICommandBus } from '../../../../common/interfaces/messaging.interfaces';
 
 @ApiTags('game-scenes')
 @ApiBearerAuth()
@@ -21,7 +18,7 @@ import { JwtAuthGuard } from '../../../account/auth/guards/jwt-auth.guard';
 @Controller('game-scenes')
 export class GameSceneController {
   constructor(
-    private readonly commandBus: CommandBus,
+    private readonly commandBus: ICommandBus,
     private readonly queryBus: QueryBus,
   ) {}
 

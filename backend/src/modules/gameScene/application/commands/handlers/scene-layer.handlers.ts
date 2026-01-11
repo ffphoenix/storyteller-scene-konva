@@ -1,6 +1,8 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { CreateSceneLayerCommand, UpdateSceneLayerCommand, DeleteSceneLayerCommand } from '../impl/scene-layer.commands';
+import { CreateSceneLayerCommand } from '../impl/create-scene-layer.command';
+import { UpdateSceneLayerCommand } from '../impl/update-scene-layer.command';
+import { DeleteSceneLayerCommand } from '../impl/delete-scene-layer.command';
 import { IGameSceneRepository } from '../../../domain/repositories/game-scene.repository.interface';
 
 @CommandHandler(CreateSceneLayerCommand)

@@ -1,6 +1,9 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Inject, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
-import { CreateGameCommand, ModifyGameCommand, StartGameCommand, DeleteGameCommand } from '../game.commands';
+import { CreateGameCommand } from '../impl/create-game.command';
+import { ModifyGameCommand } from '../impl/modify-game.command';
+import { StartGameCommand } from '../impl/start-game.command';
+import { DeleteGameCommand } from '../impl/delete-game.command';
 import { IGameRepository } from '../../../domain/repositories/game.repository.interface';
 import { Game } from '../../../domain/aggregates/game.aggregate';
 
