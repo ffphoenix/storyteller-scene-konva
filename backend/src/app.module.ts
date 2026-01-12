@@ -8,6 +8,7 @@ import { UsersModule } from './modules/account/users/users.module';
 import { AuthModule } from './modules/account/auth/auth.module';
 import { GameModule } from './modules/game/game.module';
 import { MessagingModule } from './modules/massaging/messaging.module';
+import { GameSceneModule } from './modules/gameScene/game-scene.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { MessagingModule } from './modules/massaging/messaging.module';
     UsersModule,
     AuthModule,
     GameModule,
-    // GameSceneModule,
+    GameSceneModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Kafka, Producer, Consumer, EachMessageHandler } from 'kafkajs';
+import { MessagesRegistry } from './MessagesRegistry';
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
@@ -37,9 +38,13 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     await this.producer.connect();
     const admin = this.kafka.admin();
     await admin.connect();
-    // await admin.createTopics({
-    //   topics: MessageRegistry.getAllTopics(),
-    // });
+    await admin.createTopics({
+      topics: MessagesRegistry.getAllTopics().map((topic) => ({
+        topic,
+        numPartitions: 1,
+        replicationFactor: 1,
+      })),
+    });
     this.logger.log('Kafka Producer connected');
   }
 

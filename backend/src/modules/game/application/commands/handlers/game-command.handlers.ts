@@ -15,6 +15,7 @@ export class CreateGameHandler implements ICommandHandler<CreateGameCommand> {
   ) {}
 
   async execute(command: CreateGameCommand) {
+    console.log('CreateGameHandler.execute', command);
     const existing = await this.repository.findByShortUrl(command.shortUrl);
     if (existing) {
       throw new BadRequestException('Short URL already exists');

@@ -6,7 +6,7 @@ import { GameSceneLayerEntity } from './infrastructure/persistence/typeorm/entit
 import { GameSceneRepository } from './infrastructure/persistence/typeorm/repositories/game-scene.repository';
 import { IGameSceneRepository } from './domain/repositories/game-scene.repository.interface';
 import { GameSceneController } from './presentation/rest/game-scene.controller';
-import { GameSceneGateway } from './infrastructure/websockets/game-scene.gateway';
+import { GameSceneGateway } from './presentation/websockets/game-scene.gateway';
 import {
   CreateGameSceneHandler,
   UpdateGameSceneHandler,
@@ -27,8 +27,11 @@ import {
   GetGameSceneByIdHandler,
   GetSceneLayersHandler,
 } from './application/queries/handlers/game-scene-query.handlers';
-import { GameSceneEventsHandler } from './infrastructure/kafka/game-scene-kafka.publisher';
 import { CreateDefaultSceneOnGameCreatedHandler } from './application/events/handlers/game-created.handlers';
+import { MessagesRegistry } from '../massaging/MessagesRegistry';
+import Commands from './application/commands/impl';
+import { Events } from './domain/events';
+import { MessagingModule } from '../massaging/messaging.module';
 
 const CommandHandlers = [
   CreateGameSceneHandler,
@@ -43,11 +46,13 @@ const CommandHandlers = [
 ];
 
 const QueryHandlers = [GetGameScenesHandler, GetGameSceneByIdHandler, GetSceneLayersHandler];
+const EventHandlers = [CreateDefaultSceneOnGameCreatedHandler];
 
-const EventHandlers = [GameSceneEventsHandler, CreateDefaultSceneOnGameCreatedHandler];
+MessagesRegistry.register(Commands);
+MessagesRegistry.register(Events);
 
 @Module({
-  imports: [CqrsModule, TypeOrmModule.forFeature([GameSceneEntity, GameSceneLayerEntity])],
+  imports: [CqrsModule, TypeOrmModule.forFeature([GameSceneEntity, GameSceneLayerEntity]), MessagingModule],
   controllers: [GameSceneController],
   providers: [
     {

@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete, Query, UseGuards } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateGameSceneDto, UpdateGameSceneDto, CreateSceneLayerDto, UpdateSceneLayerDto } from './dtos/game-scene.dtos';
 import { CreateGameSceneCommand } from '../../application/commands/impl/create-game-scene.command';
@@ -10,7 +10,6 @@ import { UpdateSceneLayerCommand } from '../../application/commands/impl/update-
 import { DeleteSceneLayerCommand } from '../../application/commands/impl/delete-scene-layer.command';
 import { GetGameScenesQuery, GetGameSceneByIdQuery, GetSceneLayersQuery } from '../../application/queries/impl/game-scene.queries';
 import { JwtAuthGuard } from '../../../account/auth/guards/jwt-auth.guard';
-import { ICommandBus } from '../../../../common/interfaces/messaging.interfaces';
 
 @ApiTags('game-scenes')
 @ApiBearerAuth()
@@ -18,7 +17,7 @@ import { ICommandBus } from '../../../../common/interfaces/messaging.interfaces'
 @Controller('game-scenes')
 export class GameSceneController {
   constructor(
-    private readonly commandBus: ICommandBus,
+    private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
 

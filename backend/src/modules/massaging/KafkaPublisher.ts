@@ -7,7 +7,6 @@ class KafkaPublisher implements IEventPublisher {
   private readonly kafkaProducer: Producer;
   private kafkaService: KafkaService;
   constructor(@Inject(KafkaService) kafkaService: KafkaService) {
-    console.log('KafkaPublisher', kafkaService);
     this.kafkaService = kafkaService;
     this.kafkaProducer = kafkaService.getProducer();
   }
