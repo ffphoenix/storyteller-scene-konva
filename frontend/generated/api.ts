@@ -176,6 +176,40 @@ export interface CreateGameSceneDto {
   isActive?: boolean;
 }
 
+export type GameSceneLayerEntity = object;
+
+export interface GameSceneEntity {
+  /** @example "550e8400-e29b-41d4-a716-446655440000" */
+  id: string;
+  /** @example "Living Room" */
+  name: string;
+  stageJSON: object;
+  /** @example 800 */
+  stageWidth: number;
+  /** @example 600 */
+  stageHeight: number;
+  /** @example "#ffffff" */
+  backgroundColor: string;
+  /** @default "square" */
+  gridType: "square";
+  /**
+   * @default 70
+   * @example 70
+   */
+  gridCellSize: number;
+  /** @default "Squares" */
+  gridMetricSystem: "Feet" | "Meters" | "Miles" | "Squares";
+  /** @default true */
+  isActive: boolean;
+  layers: GameSceneLayerEntity[];
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  /** @example 1 */
+  gameId: number;
+}
+
 export interface UpdateGameSceneDto {
   name?: string;
   stageWidth?: number;
@@ -774,10 +808,11 @@ export class Api<
      * @secure
      */
     findActive: (gameId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<GameSceneEntity, any>({
         path: `/api/game-scenes/active/${gameId}`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 

@@ -4,6 +4,7 @@ import handleCanvasResize from "./handleCanvasResize";
 import createGridLayer from "./createGridLayer";
 import { generateUUID } from "../../utils/uuid";
 import SceneStore from "../../store/SceneStore";
+import { toJS } from "mobx";
 
 const useStage = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -11,11 +12,13 @@ const useStage = () => {
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const stage = new Konva.Stage({
-      container: containerRef.current,
-      width: containerRef.current.clientWidth,
-      height: containerRef.current.clientHeight,
-    });
+
+    const stageJSON = toJS(SceneStore.stageJSON);
+    if (!stageJSON) throw new Error("Stage JSON is not loaded");
+
+    const stage = Konva.Node.create(stageJSON, containerRef.current);
+    stage.width(containerRef.current.clientWidth);
+    stage.height(containerRef.current.clientHeight);
 
     const gridLayer = createGridLayer();
     stage.add(gridLayer);
@@ -33,7 +36,7 @@ const useStage = () => {
     const eventResizeHandler = () => handleCanvasResize(stage, containerRef);
     window.addEventListener("resize", eventResizeHandler);
 
-    stage.on("contextmenu", (e) => {
+    stage.on("contextmenu", (e: Konva.KonvaEventObject<MouseEvent>) => {
       e.evt.preventDefault();
     });
 

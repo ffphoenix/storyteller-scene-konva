@@ -6,7 +6,7 @@ export default function loadScene(shortURL: string) {
   ApiClient.games.findOne(shortURL).then((response) => {
     runInAction(() => {
       const game = response.data;
-      ApiClient.gameScenes.findActive(game.id as number).then((sceneResponse) => {
+      ApiClient.gameScenes.findActive(game.id.toString()).then((sceneResponse) => {
         const scene = sceneResponse.data;
         sceneStore.stageJSON = scene.stageJSON;
       });
