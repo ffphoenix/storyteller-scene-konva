@@ -164,6 +164,41 @@ export interface GameResponseDto {
   status: "CREATED" | "STARTED";
 }
 
+export interface CreateGameSceneDto {
+  gameId: number;
+  name: string;
+  stageWidth?: number;
+  stageHeight?: number;
+  backgroundColor?: string;
+  gridType?: "square";
+  gridCellSize?: number;
+  gridMetricSystem?: "Feet" | "Meters" | "Miles" | "Squares";
+  isActive?: boolean;
+}
+
+export interface UpdateGameSceneDto {
+  name?: string;
+  stageWidth?: number;
+  stageHeight?: number;
+  backgroundColor?: string;
+  gridType?: "square";
+  gridCellSize?: number;
+  gridMetricSystem?: "Feet" | "Meters" | "Miles" | "Squares";
+  isActive?: boolean;
+}
+
+export interface CreateSceneLayerDto {
+  name: string;
+  isLocked?: boolean;
+  isVisible?: boolean;
+}
+
+export interface UpdateSceneLayerDto {
+  name?: string;
+  isLocked?: boolean;
+  isVisible?: boolean;
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -625,6 +660,209 @@ export class Api<
         method: "GET",
         secure: true,
         format: "json",
+        ...params,
+      }),
+  };
+  gameScenes = {
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name Create
+     * @summary Create a new game scene
+     * @request POST:/api/game-scenes
+     * @secure
+     */
+    create: (data: CreateGameSceneDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/game-scenes`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name FindAll
+     * @summary Get paginated list of game scenes
+     * @request GET:/api/game-scenes
+     * @secure
+     */
+    findAll: (
+      query: {
+        page: number;
+        limit: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/game-scenes`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name FindOne
+     * @summary Get full scene by id
+     * @request GET:/api/game-scenes/{id}
+     * @secure
+     */
+    findOne: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/${id}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name Update
+     * @summary Update scene metadata and grid settings
+     * @request PATCH:/api/game-scenes/{id}
+     * @secure
+     */
+    update: (
+      id: string,
+      data: UpdateGameSceneDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name Delete
+     * @summary Delete a scene
+     * @request DELETE:/api/game-scenes/{id}
+     * @secure
+     */
+    delete: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name FindActive
+     * @summary Get active scene by game id
+     * @request GET:/api/game-scenes/active/{gameId}
+     * @secure
+     */
+    findActive: (gameId: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/active/${gameId}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name CreateLayer
+     * @summary Create a new layer in a scene
+     * @request POST:/api/game-scenes/{sceneId}/layers
+     * @secure
+     */
+    createLayer: (
+      sceneId: string,
+      data: CreateSceneLayerDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/${sceneId}/layers`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name FindLayers
+     * @summary List layers for a scene
+     * @request GET:/api/game-scenes/{sceneId}/layers
+     * @secure
+     */
+    findLayers: (sceneId: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/${sceneId}/layers`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name UpdateLayer
+     * @summary Update layer
+     * @request PATCH:/api/game-scenes/{sceneId}/layers/{layerId}
+     * @secure
+     */
+    updateLayer: (
+      sceneId: string,
+      layerId: string,
+      data: UpdateSceneLayerDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/${sceneId}/layers/${layerId}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags game-scenes
+     * @name DeleteLayer
+     * @summary Delete layer
+     * @request DELETE:/api/game-scenes/{sceneId}/layers/{layerId}
+     * @secure
+     */
+    deleteLayer: (
+      sceneId: string,
+      layerId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/game-scenes/${sceneId}/layers/${layerId}`,
+        method: "DELETE",
+        secure: true,
         ...params,
       }),
   };
