@@ -8,7 +8,12 @@ import { DeleteGameSceneCommand } from '../../application/commands/impl/delete-g
 import { CreateSceneLayerCommand } from '../../application/commands/impl/create-scene-layer.command';
 import { UpdateSceneLayerCommand } from '../../application/commands/impl/update-scene-layer.command';
 import { DeleteSceneLayerCommand } from '../../application/commands/impl/delete-scene-layer.command';
-import { GetGameScenesQuery, GetGameSceneByIdQuery, GetSceneLayersQuery } from '../../application/queries/impl/game-scene.queries';
+import {
+  GetGameScenesQuery,
+  GetGameSceneByIdQuery,
+  GetSceneLayersQuery,
+  GetActiveGameSceneByGameIdQuery,
+} from '../../application/queries/impl/game-scene.queries';
 import { JwtAuthGuard } from '../../../account/auth/guards/jwt-auth.guard';
 
 @ApiTags('game-scenes')
@@ -35,6 +40,7 @@ export class GameSceneController {
         dto.gridType,
         dto.gridCellSize,
         dto.gridMetricSystem,
+        dto.isActive,
       ),
     );
   }
@@ -51,6 +57,12 @@ export class GameSceneController {
     return this.queryBus.execute(new GetGameSceneByIdQuery(id));
   }
 
+  @Get('active/:gameId')
+  @ApiOperation({ summary: 'Get active scene by game id' })
+  async findActive(@Param('gameId') gameId: string) {
+    return this.queryBus.execute(new GetActiveGameSceneByGameIdQuery(Number(gameId)));
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Update scene metadata and grid settings' })
   async update(@Param('id') id: string, @Body() dto: UpdateGameSceneDto) {
@@ -64,6 +76,7 @@ export class GameSceneController {
         dto.gridType,
         dto.gridCellSize,
         dto.gridMetricSystem,
+        dto.isActive,
       ),
     );
   }

@@ -45,6 +45,10 @@ export class CreateGameSceneDto {
   @IsEnum(GridMetricSystem)
   @IsOptional()
   gridMetricSystem?: GridMetricSystem;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  isActive?: boolean;
 }
 
 export class UpdateGameSceneDto {
@@ -86,6 +90,10 @@ export class UpdateGameSceneDto {
   @IsEnum(GridMetricSystem)
   @IsOptional()
   gridMetricSystem?: GridMetricSystem;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  isActive?: boolean;
 }
 
 export class CreateSceneLayerDto {

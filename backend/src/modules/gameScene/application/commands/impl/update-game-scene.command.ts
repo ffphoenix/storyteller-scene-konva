@@ -11,6 +11,7 @@ export class UpdateGameSceneCommand extends IKafkaCommand {
     public readonly gridType?: GridType,
     public readonly gridCellSize?: number,
     public readonly gridMetricSystem?: GridMetricSystem,
+    public readonly isActive?: boolean,
   ) {
     super('game-scene.command.update-scene');
   }

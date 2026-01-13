@@ -26,6 +26,7 @@ import {
   GetGameScenesHandler,
   GetGameSceneByIdHandler,
   GetSceneLayersHandler,
+  GetActiveGameSceneByGameIdHandler,
 } from './application/queries/handlers/game-scene-query.handlers';
 import { CreateDefaultSceneOnGameCreatedHandler } from './application/events/handlers/game-created.handlers';
 import { MessagesRegistry } from '../massaging/MessagesRegistry';
@@ -45,7 +46,7 @@ const CommandHandlers = [
   DeleteSceneObjectHandler,
 ];
 
-const QueryHandlers = [GetGameScenesHandler, GetGameSceneByIdHandler, GetSceneLayersHandler];
+const QueryHandlers = [GetGameScenesHandler, GetGameSceneByIdHandler, GetSceneLayersHandler, GetActiveGameSceneByGameIdHandler];
 const EventHandlers = [CreateDefaultSceneOnGameCreatedHandler];
 
 MessagesRegistry.register(Commands);

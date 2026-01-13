@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ForeignKey } from 'typeorm';
 import { GameSceneLayerEntity } from './game-scene-layer.entity';
 import { GridMetricSystem, GridType } from '../../../../domain/aggregates/game-scene.types';
 import { GameEntity } from '../../../../../game/infrastructure/persistence/entities/game.entity';
@@ -7,13 +7,6 @@ import { GameEntity } from '../../../../../game/infrastructure/persistence/entit
 export class GameSceneEntity {
   @PrimaryColumn('uuid')
   id: string;
-
-  @Column('int')
-  gameId: number;
-
-  @ManyToOne(() => GameEntity)
-  @JoinColumn({ name: 'gameId' })
-  game: GameEntity;
 
   @Column()
   name: string;
@@ -47,6 +40,9 @@ export class GameSceneEntity {
   })
   gridMetricSystem: GridMetricSystem;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @OneToMany(() => GameSceneLayerEntity, (layer) => layer.scene, { cascade: true, eager: true })
   layers: GameSceneLayerEntity[];
 
@@ -55,4 +51,8 @@ export class GameSceneEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({ type: 'integer', nullable: false })
+  @ForeignKey(() => GameEntity, { onDelete: 'CASCADE' })
+  gameId: number;
 }

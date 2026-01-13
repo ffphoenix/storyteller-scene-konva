@@ -26,6 +26,7 @@ export class CreateGameSceneHandler implements ICommandHandler<CreateGameSceneCo
         command.gridType,
         command.gridCellSize,
         command.gridMetricSystem,
+        command.isActive,
       ),
     );
 

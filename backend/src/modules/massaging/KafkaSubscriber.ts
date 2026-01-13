@@ -23,6 +23,7 @@ class KafkaSubscriber implements IMessageSource {
           const event = MessagesRegistry.get(topic);
           const parsedJson = JSON.parse(message.value.toString());
           const receivedEvent = new event(parsedJson);
+          console.log('------> Received event:', receivedEvent, this.bridge);
           this.bridge.next(receivedEvent);
         }
       },

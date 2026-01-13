@@ -24,7 +24,5 @@ export class MessagingModule implements OnModuleInit {
     this.kafkaSubscriber.bridgeEventsTo(this.commands$.subject$);
 
     await this.kafkaPublisher.connect();
-    this.event$.publisher = this.kafkaPublisher;
-    this.commands$.publisher = this.kafkaPublisher;
   }
 }

@@ -841,6 +841,35 @@
         ]
       }
     },
+    "/api/game-scenes/active/{gameId}": {
+      "get": {
+        "operationId": "findActive",
+        "parameters": [
+          {
+            "name": "gameId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get active scene by game id",
+        "tags": [
+          "game-scenes"
+        ]
+      }
+    },
     "/api/game-scenes/{sceneId}/layers": {
       "post": {
         "operationId": "createLayer",
@@ -1353,6 +1382,9 @@
               "Miles",
               "Squares"
             ]
+          },
+          "isActive": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -1392,6 +1424,9 @@
               "Miles",
               "Squares"
             ]
+          },
+          "isActive": {
+            "type": "boolean"
           }
         }
       },

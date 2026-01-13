@@ -21,6 +21,14 @@ export class GameSceneRepository implements IGameSceneRepository {
     return entity ? this.toDomain(entity) : null;
   }
 
+  async findActiveByGameId(gameId: number): Promise<GameScene | null> {
+    const entity = await this.repository.findOne({
+      where: { gameId, isActive: true },
+      relations: ['layers'],
+    });
+    return entity ? this.toDomain(entity) : null;
+  }
+
   async findAll(page: number, limit: number): Promise<[GameScene[], number]> {
     const [entities, count] = await this.repository.findAndCount({
       skip: (page - 1) * limit,
@@ -55,6 +63,7 @@ export class GameSceneRepository implements IGameSceneRepository {
       entity.gridType,
       entity.gridCellSize,
       entity.gridMetricSystem,
+      entity.isActive,
       layers,
     );
   }
@@ -71,6 +80,7 @@ export class GameSceneRepository implements IGameSceneRepository {
     entity.gridType = gameScene.getGridType();
     entity.gridCellSize = gameScene.getGridCellSize();
     entity.gridMetricSystem = gameScene.getGridMetricSystem();
+    entity.isActive = gameScene.getIsActive();
     entity.layers = gameScene.getLayers().map((l) => {
       const le = new GameSceneLayerEntity();
       le.id = l.id;

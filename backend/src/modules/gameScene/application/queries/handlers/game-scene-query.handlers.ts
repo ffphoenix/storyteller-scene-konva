@@ -1,6 +1,11 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { GetGameScenesQuery, GetGameSceneByIdQuery, GetSceneLayersQuery } from '../impl/game-scene.queries';
+import {
+  GetGameScenesQuery,
+  GetGameSceneByIdQuery,
+  GetSceneLayersQuery,
+  GetActiveGameSceneByGameIdQuery,
+} from '../impl/game-scene.queries';
 import { IGameSceneRepository } from '../../../domain/repositories/game-scene.repository.interface';
 
 @QueryHandler(GetGameScenesQuery)
@@ -19,6 +24,7 @@ export class GetGameScenesHandler implements IQueryHandler<GetGameScenesQuery> {
         gridType: s.getGridType(),
         gridCellSize: s.getGridCellSize(),
         gridMetricSystem: s.getGridMetricSystem(),
+        isActive: s.getIsActive(),
       })),
       total,
       page: query.page,
@@ -45,6 +51,7 @@ export class GetGameSceneByIdHandler implements IQueryHandler<GetGameSceneByIdQu
       gridType: scene.getGridType(),
       gridCellSize: scene.getGridCellSize(),
       gridMetricSystem: scene.getGridMetricSystem(),
+      isActive: scene.getIsActive(),
       layers: scene.getLayers().map((l) => ({
         id: l.id,
         name: l.name,
@@ -71,5 +78,35 @@ export class GetSceneLayersHandler implements IQueryHandler<GetSceneLayersQuery>
       isVisible: l.isVisible,
       order: l.order,
     }));
+  }
+}
+
+@QueryHandler(GetActiveGameSceneByGameIdQuery)
+export class GetActiveGameSceneByGameIdHandler implements IQueryHandler<GetActiveGameSceneByGameIdQuery> {
+  constructor(@Inject(IGameSceneRepository) private readonly repository: IGameSceneRepository) {}
+
+  async execute(query: GetActiveGameSceneByGameIdQuery) {
+    const scene = await this.repository.findActiveByGameId(query.gameId);
+    if (!scene) throw new NotFoundException('Active game scene not found');
+
+    return {
+      id: scene.getId(),
+      name: scene.getName(),
+      stageJSON: scene.getStageJSON(),
+      stageWidth: scene.getStageWidth(),
+      stageHeight: scene.getStageHeight(),
+      backgroundColor: scene.getBackgroundColor(),
+      gridType: scene.getGridType(),
+      gridCellSize: scene.getGridCellSize(),
+      gridMetricSystem: scene.getGridMetricSystem(),
+      isActive: scene.getIsActive(),
+      layers: scene.getLayers().map((l) => ({
+        id: l.id,
+        name: l.name,
+        isLocked: l.isLocked,
+        isVisible: l.isVisible,
+        order: l.order,
+      })),
+    };
   }
 }

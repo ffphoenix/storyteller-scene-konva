@@ -9,6 +9,8 @@ import { AuthModule } from './modules/account/auth/auth.module';
 import { GameModule } from './modules/game/game.module';
 import { MessagingModule } from './modules/massaging/messaging.module';
 import { GameSceneModule } from './modules/gameScene/game-scene.module';
+import { CqrsModule } from '@nestjs/cqrs';
+import KafkaPublisher from './modules/massaging/KafkaPublisher';
 
 @Module({
   imports: [
@@ -24,6 +26,12 @@ import { GameSceneModule } from './modules/gameScene/game-scene.module';
       },
     }),
     MessagingModule,
+    CqrsModule.forRoot({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      eventPublisher: KafkaPublisher,
+      // commandPublisher: KafkaPublisher,
+    }),
     UsersModule,
     AuthModule,
     GameModule,

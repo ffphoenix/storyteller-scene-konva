@@ -14,6 +14,7 @@ export class GameScene extends AggregateRoot {
   private gridType: GridType;
   private gridCellSize: number;
   private gridMetricSystem: GridMetricSystem;
+  private isActive: boolean;
   private layers: GameSceneLayer[] = [];
 
   constructor(
@@ -27,6 +28,7 @@ export class GameScene extends AggregateRoot {
     gridType: GridType,
     gridCellSize: number,
     gridMetricSystem: GridMetricSystem,
+    isActive: boolean = true,
     layers: GameSceneLayer[] = [],
   ) {
     super();
@@ -40,6 +42,7 @@ export class GameScene extends AggregateRoot {
     this.gridType = gridType;
     this.gridCellSize = gridCellSize;
     this.gridMetricSystem = gridMetricSystem;
+    this.isActive = isActive;
     this.layers = layers;
   }
 
@@ -53,6 +56,7 @@ export class GameScene extends AggregateRoot {
     gridType: GridType = GridType.SQUARE,
     gridCellSize: number = 70,
     gridMetricSystem: GridMetricSystem = GridMetricSystem.SQUARES,
+    isActive: boolean = true,
   ): GameScene {
     if (!name || name.trim().length === 0) {
       throw new Error('Name is required');
@@ -93,6 +97,7 @@ export class GameScene extends AggregateRoot {
       gridType,
       gridCellSize,
       gridMetricSystem,
+      isActive,
       [defaultLayer],
     );
   }
@@ -105,6 +110,7 @@ export class GameScene extends AggregateRoot {
     gridType?: GridType;
     gridCellSize?: number;
     gridMetricSystem?: GridMetricSystem;
+    isActive?: boolean;
   }): void {
     if (data.name !== undefined) {
       if (!data.name || data.name.trim().length === 0) throw new Error('Name cannot be empty');
@@ -118,6 +124,7 @@ export class GameScene extends AggregateRoot {
       this.gridCellSize = data.gridCellSize;
     }
     if (data.gridMetricSystem !== undefined) this.gridMetricSystem = data.gridMetricSystem;
+    if (data.isActive !== undefined) this.isActive = data.isActive;
   }
 
   addLayer(id: string, name: string, isLocked: boolean = false, isVisible: boolean = true): void {
@@ -229,6 +236,9 @@ export class GameScene extends AggregateRoot {
   }
   getGridMetricSystem(): GridMetricSystem {
     return this.gridMetricSystem;
+  }
+  getIsActive(): boolean {
+    return this.isActive;
   }
   getLayers(): GameSceneLayer[] {
     return this.layers;

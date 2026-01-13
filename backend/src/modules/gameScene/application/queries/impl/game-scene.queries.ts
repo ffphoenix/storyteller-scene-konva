@@ -12,3 +12,7 @@ export class GetGameSceneByIdQuery {
 export class GetSceneLayersQuery {
   constructor(public readonly sceneId: string) {}
 }
+
+export class GetActiveGameSceneByGameIdQuery {
+  constructor(public readonly gameId: number) {}
+}
