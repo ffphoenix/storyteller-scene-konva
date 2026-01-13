@@ -856,7 +856,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "The active scene.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameSceneEntity"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1390,6 +1397,98 @@
         "required": [
           "gameId",
           "name"
+        ]
+      },
+      "GameSceneLayerEntity": {
+        "type": "object",
+        "properties": {}
+      },
+      "GameSceneEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Living Room"
+          },
+          "stageJSON": {
+            "type": "object"
+          },
+          "stageWidth": {
+            "type": "number",
+            "example": 800
+          },
+          "stageHeight": {
+            "type": "number",
+            "example": 600
+          },
+          "backgroundColor": {
+            "type": "string",
+            "example": "#ffffff"
+          },
+          "gridType": {
+            "type": "string",
+            "enum": [
+              "square"
+            ],
+            "default": "square"
+          },
+          "gridCellSize": {
+            "type": "number",
+            "example": 70,
+            "default": 70
+          },
+          "gridMetricSystem": {
+            "type": "string",
+            "enum": [
+              "Feet",
+              "Meters",
+              "Miles",
+              "Squares"
+            ],
+            "default": "Squares"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "layers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameSceneLayerEntity"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "gameId": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "stageJSON",
+          "stageWidth",
+          "stageHeight",
+          "backgroundColor",
+          "gridType",
+          "gridCellSize",
+          "gridMetricSystem",
+          "isActive",
+          "layers",
+          "createdAt",
+          "updatedAt",
+          "gameId"
         ]
       },
       "UpdateGameSceneDto": {

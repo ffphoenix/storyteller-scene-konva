@@ -10,7 +10,9 @@ import { GameModule } from './modules/game/game.module';
 import { MessagingModule } from './modules/massaging/messaging.module';
 import { GameSceneModule } from './modules/gameScene/game-scene.module';
 import { CqrsModule } from '@nestjs/cqrs';
-import KafkaPublisher from './modules/massaging/KafkaPublisher';
+import KafkaEventPublisher from './modules/massaging/KafkaEventPublisher';
+import KafkaCommandPublisher from './modules/massaging/KafkaCommandPublisher';
+import { KafkaService } from './modules/massaging/KafkaService';
 
 @Module({
   imports: [
@@ -26,11 +28,15 @@ import KafkaPublisher from './modules/massaging/KafkaPublisher';
       },
     }),
     MessagingModule,
-    CqrsModule.forRoot({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      eventPublisher: KafkaPublisher,
-      // commandPublisher: KafkaPublisher,
+    CqrsModule.forRootAsync({
+      imports: [MessagingModule],
+      inject: [KafkaService],
+      useFactory: async (kafkaService: KafkaService) => {
+        return {
+          eventPublisher: new KafkaEventPublisher(kafkaService),
+          commandPublisher: new KafkaCommandPublisher(kafkaService),
+        };
+      },
     }),
     UsersModule,
     AuthModule,

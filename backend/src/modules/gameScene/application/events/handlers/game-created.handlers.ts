@@ -7,7 +7,7 @@ export class CreateDefaultSceneOnGameCreatedHandler implements IEventHandler<Gam
   constructor(private readonly commandBus: CommandBus) {}
 
   async handle(event: GameCreatedEvent) {
-    console.log('Game created event received');
+    console.log('========== Game created event received');
     await this.commandBus.execute(new CreateGameSceneCommand(event.id, 'New game scene'));
   }
 }

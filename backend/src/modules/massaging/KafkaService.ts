@@ -23,7 +23,9 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
       brokers,
     });
     this.producer = this.kafka.producer();
-    this.consumers.push(this.kafka.consumer({ groupId: 'storyteller-group' }));
+    const consumerGroupId = 'storyteller-group' + Math.random().toString(16);
+    console.log('KafkaService consumerGroupId', consumerGroupId);
+    this.consumers.push(this.kafka.consumer({ groupId: consumerGroupId }));
   }
 
   getProducer() {
@@ -38,6 +40,15 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     await this.producer.connect();
     const admin = this.kafka.admin();
     await admin.connect();
+    const existingTopics = await admin.listTopics();
+    const topicsToCreate = [];
+    MessagesRegistry.getAllTopics().forEach((topic) => {
+      if (!existingTopics.includes(topic)) {
+        topicsToCreate.push(topic);
+      }
+    });
+    if (topicsToCreate.length === 0) return;
+
     await admin.createTopics({
       topics: MessagesRegistry.getAllTopics().map((topic) => ({
         topic,
@@ -45,7 +56,6 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
         replicationFactor: 1,
       })),
     });
-    this.logger.log('Kafka Producer connected');
   }
 
   async onModuleDestroy() {
@@ -54,13 +64,6 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
       await consumer.disconnect();
     }
     this.logger.log('Kafka Messaging Service destroyed');
-  }
-
-  async send(topic: string, message: any) {
-    return this.producer.send({
-      topic,
-      messages: [{ value: JSON.stringify(message) }],
-    });
   }
 
   async subscribe(groupId: string, topics: string[], onMessage: EachMessageHandler) {

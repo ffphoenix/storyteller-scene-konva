@@ -1,13 +1,13 @@
 import { IMessageSource } from '@nestjs/cqrs';
 import { Subject } from 'rxjs';
 import { Consumer } from 'kafkajs';
-import { Inject } from '@nestjs/common';
-import { KafkaService } from './KafkaService';
 import { MessagesRegistry } from './MessagesRegistry';
+import { KafkaService } from './KafkaService';
+import { Inject } from '@nestjs/common';
 
 class KafkaSubscriber implements IMessageSource {
   private readonly kafkaConsumer: Consumer;
-  private bridge: Subject<any>;
+  private bridges: Subject<any>[] = [];
 
   constructor(@Inject(KafkaService) kafkaService: KafkaService) {
     this.kafkaConsumer = kafkaService.getConsumer();
@@ -19,19 +19,19 @@ class KafkaSubscriber implements IMessageSource {
 
     await this.kafkaConsumer.run({
       eachMessage: async ({ topic, message }) => {
-        if (this.bridge) {
+        if (this.bridges.length > 0) {
           const event = MessagesRegistry.get(topic);
           const parsedJson = JSON.parse(message.value.toString());
-          const receivedEvent = new event(parsedJson);
-          console.log('------> Received event:', receivedEvent, this.bridge);
-          this.bridge.next(receivedEvent);
+          const receivedEvent = Object.assign(new event(), parsedJson);
+          console.log('------> Received event:', receivedEvent);
+          this.bridges.forEach((bridge) => bridge.next(receivedEvent));
         }
       },
     });
   }
 
   bridgeEventsTo<T>(subject: Subject<T>) {
-    this.bridge = subject;
+    this.bridges.push(subject);
   }
 }
 

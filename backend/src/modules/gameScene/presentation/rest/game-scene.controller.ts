@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query, UseGuards, HttpStatus } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateGameSceneDto, UpdateGameSceneDto, CreateSceneLayerDto, UpdateSceneLayerDto } from './dtos/game-scene.dtos';
@@ -15,6 +15,7 @@ import {
   GetActiveGameSceneByGameIdQuery,
 } from '../../application/queries/impl/game-scene.queries';
 import { JwtAuthGuard } from '../../../account/auth/guards/jwt-auth.guard';
+import { GameSceneEntity } from '../../infrastructure/persistence/typeorm/entities/game-scene.entity';
 
 @ApiTags('game-scenes')
 @ApiBearerAuth()
@@ -59,6 +60,7 @@ export class GameSceneController {
 
   @Get('active/:gameId')
   @ApiOperation({ summary: 'Get active scene by game id' })
+  @ApiResponse({ status: HttpStatus.OK, type: GameSceneEntity, description: 'The active scene.' })
   async findActive(@Param('gameId') gameId: string) {
     return this.queryBus.execute(new GetActiveGameSceneByGameIdQuery(Number(gameId)));
   }

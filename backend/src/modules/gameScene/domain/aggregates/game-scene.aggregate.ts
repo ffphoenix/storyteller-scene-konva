@@ -74,13 +74,18 @@ export class GameScene extends AggregateRoot {
     );
 
     const defaultJSON = {
+      attrs: {
+        width: stageWidth,
+        height: stageHeight,
+      },
       className: 'Stage',
       children: [
         {
           attrs: {
             id: defaultLayer.id,
+            name: defaultLayer.name,
           },
-          className: 'Background',
+          className: 'Layer',
           children: [],
         },
       ],
