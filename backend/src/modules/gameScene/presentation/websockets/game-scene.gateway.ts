@@ -28,6 +28,7 @@ export class GameSceneGateway implements OnGatewayConnection, OnGatewayDisconnec
 
   handleConnection(client: Socket) {
     const sceneId = client.handshake.query.sceneId as string;
+    console.log(`Client connected to scene ${sceneId}`, client.handshake.query);
     if (sceneId) {
       client.join(sceneId);
     }
@@ -35,6 +36,12 @@ export class GameSceneGateway implements OnGatewayConnection, OnGatewayDisconnec
 
   handleDisconnect(client: Socket) {
     // Rooms are automatically left on disconnect
+  }
+
+  @SubscribeMessage('joinScene')
+  async handleJoinScene(@MessageBody() sceneId: string, @ConnectedSocket() client: Socket) {
+    console.log(`Client joined scene ${sceneId}`);
+    client.join(sceneId);
   }
 
   @SubscribeMessage('addObject')
@@ -55,7 +62,14 @@ export class GameSceneGateway implements OnGatewayConnection, OnGatewayDisconnec
 
   @SubscribeMessage('modifyObject')
   async handleModifyObject(
-    @MessageBody() data: { sceneId: string; layerId: string; payload: KonvaNode[] },
+    @MessageBody()
+    data: {
+      sceneId: string;
+      layerId: string;
+      payload: KonvaNode[];
+      currentGroupProps: Partial<KonvaNode>;
+      originalGroupProps: Partial<KonvaNode>;
+    },
     @ConnectedSocket() client: Socket,
   ) {
     await this.commandBus.execute(new ModifySceneObjectCommand(data.sceneId, data.layerId, data.payload));
@@ -64,6 +78,8 @@ export class GameSceneGateway implements OnGatewayConnection, OnGatewayDisconnec
       sceneId: data.sceneId,
       layerId: data.layerId,
       payload: data.payload,
+      currentGroupProps: data.currentGroupProps,
+      originalGroupProps: data.originalGroupProps,
     });
   }
 
@@ -77,7 +93,7 @@ export class GameSceneGateway implements OnGatewayConnection, OnGatewayDisconnec
     client.to(data.sceneId).emit('objectDeleted', {
       sceneId: data.sceneId,
       layerId: data.layerId,
-      objectIds: data.payload,
+      payload: data.payload,
     });
   }
 }

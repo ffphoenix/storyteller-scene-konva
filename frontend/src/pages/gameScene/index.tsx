@@ -14,7 +14,7 @@ const GameScenePage: React.FC = () => {
   useWheelZoomHandler(stageRef);
   useSceneTools(stageRef);
   useSceneHistory(stageRef);
-  useSceneSocket();
+  useSceneSocket(stageRef);
 
   console.log("GameScenePage rendered");
 
