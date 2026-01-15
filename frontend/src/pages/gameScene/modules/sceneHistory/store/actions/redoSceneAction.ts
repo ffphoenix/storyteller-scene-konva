@@ -3,6 +3,7 @@ import SceneHistoryStore from "../SceneHistoryStore";
 import type { MutableRefObject } from "react";
 import doHistoryAction from "./doHistoryAction";
 import { toJS } from "mobx";
+import fireObjectsHistoryAction from "../../../sceneActions/catcher/fireObjectsHistoryAction";
 
 const redoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
   const stage = stageRef.current;
@@ -26,6 +27,15 @@ const redoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
       },
       true,
     );
+    fireObjectsHistoryAction(stage, {
+      historyAction: "redo",
+      action,
+      actionType,
+      nodes,
+      layerId,
+      originalGroupProps: currentGroupProps || {},
+      currentGroupProps: originalGroupProps || {},
+    });
   } catch (e) {
     console.error(e);
     SceneHistoryStore.popRedoHistoryItem();

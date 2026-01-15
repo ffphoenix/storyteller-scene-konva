@@ -13,3 +13,11 @@ export type SceneActionEvent = {
   actionType?: ModifyActionType;
   originalProps?: Partial<Konva.NodeConfig>;
 };
+export type SceneHistoryActionEvent = {
+  action: string;
+  nodes: Partial<Konva.Node>[];
+  layerId: string;
+  actionType?: string;
+  originalGroupProps?: Partial<Konva.NodeConfig>;
+  currentGroupProps?: Partial<Konva.NodeConfig>;
+};

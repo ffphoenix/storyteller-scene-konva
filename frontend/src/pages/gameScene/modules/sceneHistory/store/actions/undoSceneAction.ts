@@ -3,6 +3,7 @@ import SceneHistoryStore from "../SceneHistoryStore";
 import type { MutableRefObject } from "react";
 import doHistoryAction from "./doHistoryAction";
 import { toJS } from "mobx";
+import fireObjectsHistoryAction from "../../../sceneActions/catcher/fireObjectsHistoryAction";
 
 const undoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
   const stage = stageRef.current;
@@ -24,6 +25,15 @@ const undoSceneAction = (stageRef: MutableRefObject<Konva.Stage | null>) => {
       actionType,
       originalGroupProps: currentGroupProps,
       currentGroupProps: originalGroupProps,
+    });
+    fireObjectsHistoryAction(stage, {
+      historyAction: "undo",
+      action,
+      actionType,
+      nodes,
+      layerId,
+      originalGroupProps: currentGroupProps || {},
+      currentGroupProps: originalGroupProps || {},
     });
   } catch (e) {
     console.error(e);

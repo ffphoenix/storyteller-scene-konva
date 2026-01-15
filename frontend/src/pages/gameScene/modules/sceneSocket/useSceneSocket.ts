@@ -1,4 +1,4 @@
-import type { SceneActionEvent } from "../sceneActions/types";
+import type { SceneActionEvent, SceneHistoryActionEvent } from "../sceneActions/types";
 import SceneStore from "../../store/SceneStore";
 import socketManager from "../../../../utils/socketManager";
 import CurrentUser from "../../../../globalStore/users/CurrentUser";
@@ -15,25 +15,21 @@ const useSceneSocket = (stageRef: MutableRefObject<Konva.Stage | null>) => {
 
   useEffect(() => {
     if (!stageRef.current) return;
-    const stage = stageRef.current;
     socket.connect();
     socket.emit("joinScene", SceneStore.activeSceneId);
 
     socket.on("objectAdded", (data) => {
       if (!stageRef.current) return;
-      console.log("objectAdded socket event===", data);
       addObject(stageRef.current, data.payload, data.layerId);
     });
 
     socket.on("objectDeleted", (data) => {
       if (!stageRef.current) return;
-      console.log("objectDeleted socket event===", data);
       removeObject(stageRef.current, data.payload);
     });
 
     socket.on("objectModified", (data) => {
       if (!stageRef.current) return;
-      console.log("objectAdded socket event===", data);
       modifyObject(stageRef.current, data.layerId, data.payload, data.currentGroupProps, data.originalGroupProps);
     });
 
@@ -70,11 +66,36 @@ const useSceneSocket = (stageRef: MutableRefObject<Konva.Stage | null>) => {
 
       socket.emit("deleteObject", { layerId, sceneId: SceneStore.activeSceneId, payload: nodesToJSON(nodes) });
     };
+
     document.addEventListener("sc:object:removed", onObjectRemoved as EventListener);
+
+    const getEmitEvent = (action: string) => {
+      const emitEventMap: Record<string, string> = {
+        add: "addObject",
+        modify: "modifyObject",
+        remove: "deleteObject",
+      };
+      return emitEventMap[action] || null;
+    };
+    const onHistoryAction = (e: CustomEvent<SceneHistoryActionEvent>) => {
+      const { nodes, layerId, currentGroupProps, originalGroupProps, action, actionType } = e.detail;
+      const emitEvent = getEmitEvent(action);
+      if (!emitEvent) return;
+      socket.emit(emitEvent, {
+        layerId,
+        actionType,
+        sceneId: SceneStore.activeSceneId,
+        payload: nodes,
+        currentGroupProps,
+        originalGroupProps,
+      });
+    };
+    document.addEventListener("sc:object:history:action", onHistoryAction as EventListener);
     return () => {
       document.removeEventListener("sc:object:added", onObjectAdded as EventListener);
       document.removeEventListener("sc:object:modified", onObjectModified as EventListener);
       document.removeEventListener("sc:object:removed", onObjectRemoved as EventListener);
+      document.removeEventListener("sc:object:history:action", onHistoryAction as EventListener);
     };
   }, []);
 };
