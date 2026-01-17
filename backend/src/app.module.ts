@@ -9,6 +9,7 @@ import { AuthModule } from './modules/account/auth/auth.module';
 import { GameModule } from './modules/game/game.module';
 import { MessagingModule } from './modules/massaging/messaging.module';
 import { GameSceneModule } from './modules/gameScene/gameScene.module';
+import { GameHistoryModule } from './modules/gameHistory/gameHistory.module';
 import { CqrsModule } from '@nestjs/cqrs';
 import KafkaEventPublisher from './modules/massaging/KafkaEventPublisher';
 import KafkaCommandPublisher from './modules/massaging/KafkaCommandPublisher';
@@ -42,6 +43,7 @@ import { KafkaService } from './modules/massaging/KafkaService';
     AuthModule,
     GameModule,
     GameSceneModule,
+    GameHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
