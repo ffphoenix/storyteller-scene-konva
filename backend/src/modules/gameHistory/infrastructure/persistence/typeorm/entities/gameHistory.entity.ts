@@ -3,7 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { GameHistoryType } from '../../../../domain/aggregates/gameHistory.types';
 
 @Entity('game_history')
-@Index(['gameId', 'type', 'createdAt'])
 export class GameHistoryEntity {
   @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
   @PrimaryColumn('uuid')
@@ -13,12 +12,10 @@ export class GameHistoryEntity {
   @Column({
     type: 'varchar',
   })
-  @Index()
   type: string;
 
   @ApiProperty({ example: 'user-123' })
   @Column({ name: 'user_id' })
-  @Index()
   userId: string;
 
   @ApiProperty({ example: 1 })
@@ -31,11 +28,11 @@ export class GameHistoryEntity {
   body: any;
 
   @ApiProperty()
+  @Index()
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
   createdAt: Date;
 
   @ApiProperty()
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp with time zone', nullable: true })
-  @Index()
   deletedAt: Date | null;
 }
