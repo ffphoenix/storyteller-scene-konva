@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsInt, IsEnum, IsObject } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsObject, IsNumber } from 'class-validator';
 import { GameHistoryType } from '../../../domain/aggregates/gameHistory.types';
 
 export class CreateGameHistoryItemDto {
@@ -8,12 +8,12 @@ export class CreateGameHistoryItemDto {
   @IsNotEmpty()
   type: string;
 
-  @ApiProperty({ example: 'user-123' })
-  @IsString()
+  @ApiProperty({ example: 1 })
+  @IsNumber()
   @IsNotEmpty()
-  userId: string;
+  userId: number;
 
-  @ApiProperty({ example: { x: 10, y: 20 } })
+  @ApiProperty({ example: { message: '1d20' } })
   @IsObject()
   @IsNotEmpty()
   body: any;

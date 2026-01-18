@@ -32,7 +32,7 @@ export class GameHistoryController {
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'type', required: false, type: String })
-  @ApiQuery({ name: 'userId', required: false, type: String })
+  @ApiQuery({ name: 'userId', required: false, type: Number })
   @ApiQuery({ name: 'includeDeleted', required: false, type: Boolean })
   @ApiResponse({ status: 200, type: PaginatedGameHistoryDto })
   async getForGame(
@@ -40,7 +40,7 @@ export class GameHistoryController {
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 20,
     @Query('type') type?: string,
-    @Query('userId') userId?: string,
+    @Query('userId') userId?: number,
     @Query('includeDeleted') includeDeleted: boolean = false,
   ): Promise<PaginatedGameHistoryDto> {
     const [items, total] = await this.queryBus.execute(
@@ -48,7 +48,7 @@ export class GameHistoryController {
         page: +page,
         limit: +limit,
         type,
-        userId,
+        userId: userId ? +userId : undefined,
         includeDeleted: String(includeDeleted) === 'true',
       }),
     );

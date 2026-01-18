@@ -52,7 +52,7 @@ export class GameHistoryGateway implements OnGatewayConnection, OnGatewayDisconn
 
   @SubscribeMessage('createHistoryItem')
   async handleCreateHistoryItem(
-    @MessageBody() data: { type: string; userId: string; gameId: number; body: any },
+    @MessageBody() data: { type: string; userId: number; gameId: number; body: any },
     @ConnectedSocket() client: Socket,
   ) {
     await this.commandBus.execute(new CreateGameHistoryItemCommand(data.type, data.userId, data.gameId, data.body));

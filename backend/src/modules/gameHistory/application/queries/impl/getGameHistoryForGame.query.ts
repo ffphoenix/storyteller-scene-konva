@@ -5,7 +5,7 @@ export class GetGameHistoryForGameQuery {
       page: number;
       limit: number;
       type?: string;
-      userId?: string;
+      userId?: number;
       includeDeleted?: boolean;
     },
   ) {}

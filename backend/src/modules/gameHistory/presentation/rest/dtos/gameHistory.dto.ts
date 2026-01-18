@@ -8,8 +8,8 @@ export class GameHistoryDto {
   @ApiProperty({ enum: GameHistoryType })
   type: string;
 
-  @ApiProperty({ example: 'user-123' })
-  userId: string;
+  @ApiProperty({ example: 1 })
+  userId: number;
 
   @ApiProperty({ example: 1 })
   gameId: number;

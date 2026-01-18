@@ -5,7 +5,7 @@ import { GameHistoryItemCreatedEvent } from '../events/gameHistoryItemCreated.ev
 export class GameHistory extends AggregateRoot {
   private readonly id: string;
   private readonly type: GameHistoryType;
-  private readonly userId: string;
+  private readonly userId: number;
   private readonly gameId: number;
   private readonly body: any;
   private readonly createdAt: Date;
@@ -14,7 +14,7 @@ export class GameHistory extends AggregateRoot {
   constructor(
     id: string,
     type: GameHistoryType,
-    userId: string,
+    userId: number,
     gameId: number,
     body: any,
     createdAt: Date,
@@ -30,7 +30,7 @@ export class GameHistory extends AggregateRoot {
     this.deletedAt = deletedAt;
   }
 
-  static create(id: string, type: string, userId: string, gameId: number, body: any): GameHistory {
+  static create(id: string, type: string, userId: number, gameId: number, body: any): GameHistory {
     if (!id) throw new Error('ID is required');
     if (!userId) throw new Error('User ID is required');
     if (!gameId) throw new Error('Game ID is required');
@@ -60,7 +60,7 @@ export class GameHistory extends AggregateRoot {
     return this.type;
   }
 
-  getUserId(): string {
+  getUserId(): number {
     return this.userId;
   }
 

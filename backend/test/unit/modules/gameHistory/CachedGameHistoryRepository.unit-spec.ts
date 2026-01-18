@@ -28,12 +28,12 @@ describe('CachedGameHistoryRepository', () => {
 
   describe('save', () => {
     it('should save to DB and then to Redis', async () => {
-      const history = new GameHistory('1', GameHistoryType.DICE_ROLL, 'user1', 123, { result: 10 }, new Date());
+      const history = new GameHistory('1', GameHistoryType.DICE_ROLL, 1, 123, { result: 10 }, new Date());
 
       await cachedRepository.save(history);
 
       expect(dbRepository.save).toHaveBeenCalledWith(history);
-      expect(redis.lpush).toHaveBeenCalledWith('game_history:123', expect.stringContaining('"id":"1"'));
+      expect(redis.lpush).toHaveBeenCalledWith('game_history:123', expect.stringContaining('"userId":1'));
       expect(redis.ltrim).toHaveBeenCalledWith('game_history:123', 0, 99);
     });
   });
@@ -45,7 +45,7 @@ describe('CachedGameHistoryRepository', () => {
       const cachedItem = JSON.stringify({
         id: '1',
         type: GameHistoryType.DICE_ROLL,
-        userId: 'user1',
+        userId: 1,
         gameId,
         body: { result: 10 },
         createdAt: new Date().toISOString(),

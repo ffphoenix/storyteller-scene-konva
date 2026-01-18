@@ -1105,7 +1105,7 @@
             "required": false,
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           },
           {
@@ -1741,14 +1741,13 @@
             "example": "DICE_ROLL"
           },
           "userId": {
-            "type": "string",
-            "example": "user-123"
+            "type": "number",
+            "example": 1
           },
           "body": {
             "type": "object",
             "example": {
-              "x": 10,
-              "y": 20
+              "message": "1d20"
             }
           }
         },
@@ -1775,8 +1774,8 @@
             ]
           },
           "userId": {
-            "type": "string",
-            "example": "user-123"
+            "type": "number",
+            "example": 1
           },
           "gameId": {
             "type": "number",

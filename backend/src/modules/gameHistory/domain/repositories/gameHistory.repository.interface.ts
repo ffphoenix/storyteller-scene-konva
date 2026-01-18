@@ -9,7 +9,7 @@ export interface IGameHistoryRepository {
       page: number;
       limit: number;
       type?: string;
-      userId?: string;
+      userId?: number;
       includeDeleted?: boolean;
     },
   ): Promise<[GameHistory[], number]>;

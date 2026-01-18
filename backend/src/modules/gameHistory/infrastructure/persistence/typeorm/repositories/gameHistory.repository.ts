@@ -32,7 +32,7 @@ export class GameHistoryRepository implements IGameHistoryRepository {
       page: number;
       limit: number;
       type?: string;
-      userId?: string;
+      userId?: number;
       includeDeleted?: boolean;
     },
   ): Promise<[GameHistory[], number]> {
@@ -43,7 +43,7 @@ export class GameHistoryRepository implements IGameHistoryRepository {
       query.andWhere('history.type = :type', { type });
     }
 
-    if (userId) {
+    if (userId !== undefined) {
       query.andWhere('history.userId = :userId', { userId });
     }
 

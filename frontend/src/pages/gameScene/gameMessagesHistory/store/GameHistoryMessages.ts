@@ -18,7 +18,7 @@ export type HistoryMessagesStore = {
   close: () => void;
   addDiceRollMessage: (userId: number, result: string, context?: string) => void;
   addUserMessage: (userId: number, text: string) => void;
-  addSystemMessage: (text: string) => void;
+  updateMessages: (messages: HistoryMessage[]) => void;
   clear: () => void;
 };
 
@@ -52,7 +52,9 @@ const gameHistoryMessages: HistoryMessagesStore = makeAutoObservable<HistoryMess
       createdAt: new Date(),
     });
   },
-  addSystemMessage: () => {},
+  updateMessages: (messages) => {
+    gameHistoryMessages.messages = messages;
+  },
   clear: () => {
     gameHistoryMessages.messages = [];
   },

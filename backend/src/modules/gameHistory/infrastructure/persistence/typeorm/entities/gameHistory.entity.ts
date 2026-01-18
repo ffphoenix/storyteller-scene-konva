@@ -14,9 +14,9 @@ export class GameHistoryEntity {
   })
   type: string;
 
-  @ApiProperty({ example: 'user-123' })
-  @Column({ name: 'user_id' })
-  userId: string;
+  @ApiProperty({ example: 1 })
+  @Column({ name: 'user_id', type: 'integer' })
+  userId: number;
 
   @ApiProperty({ example: 1 })
   @Column({ name: 'game_id', type: 'integer' })
