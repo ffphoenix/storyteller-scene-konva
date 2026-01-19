@@ -14,6 +14,7 @@ export default async function loadScene(shortURL: string) {
       ...item,
       createdAt: new Date(item.createdAt),
     }));
+    // @ts-ignore
     gameHistoryMessages.updateMessages(hm);
   } catch (e) {
     console.error(e);

@@ -152,44 +152,48 @@ export class GameScene extends AggregateRoot {
   }
 
   addLayer(id: string, name: string, isLocked: boolean = false, isVisible: boolean = true): void {
-    // if (this.layers.find((l) => l.id === id)) {
-    //   throw new Error('Layer ID already exists');
-    // }
-    // const order = this.layers.length;
-    // const newLayer = new GameSceneLayer(id, name, isLocked, isVisible, order);
-    // this.layers.push(newLayer);
-    //
-    // if (!this.stageJSON.children) this.stageJSON.children = [];
-    // this.stageJSON.children.push({
-    //   id: newLayer.id,
-    //   name: newLayer.name,
-    //   objects: [],
-    // });
+    if (this.layers.find((l) => l.id === id)) {
+      throw new Error('Layer ID already exists');
+    }
+    const order = this.layers.length;
+    const newLayer = new GameSceneLayer(id, name, isLocked, isVisible, order);
+    this.layers.push(newLayer);
+
+    if (!this.stageJSON.children) this.stageJSON.children = [];
+
+    this.stageJSON.children.push({
+      attrs: {
+        id: newLayer.id,
+        name: newLayer.name,
+      },
+      className: 'Layer',
+      children: [],
+    });
   }
 
   updateLayer(id: string, name?: string, isLocked?: boolean, isVisible?: boolean): void {
-    // const layer = this.layers.find((l) => l.id === id);
-    // if (!layer) throw new Error('Layer not found');
-    //
-    // layer.update(name, isLocked, isVisible);
-    //
-    // const stageLayer = this.stageJSON.children.find((l: any) => l.id === id);
-    // if (stageLayer) {
-    //   if (name !== undefined) stageLayer.name = name;
-    // }
+    const layer = this.layers.find((l) => l.id === id);
+    if (!layer) throw new Error('Layer not found');
+
+    layer.update(name, isLocked, isVisible);
+
+    const stageLayer = this.stageJSON.children.find((l: KonvaNode) => l.attrs.id === id);
+    if (stageLayer) {
+      if (name !== undefined) stageLayer.attrs.name = name;
+    }
   }
 
   deleteLayer(id: string): void {
-    // const layerIndex = this.layers.findIndex((l) => l.id === id);
-    // if (layerIndex === -1) throw new Error('Layer not found');
-    //
-    // const stageLayer = this.stageJSON.layers.find((l: any) => l.id === id);
-    // if (stageLayer && stageLayer.objects && stageLayer.objects.length > 0) {
-    //   throw new Error('Cannot delete layer that contains objects');
-    // }
-    //
-    // this.layers.splice(layerIndex, 1);
-    // this.stageJSON.layers = this.stageJSON.layers.filter((l: any) => l.id !== id);
+    const layerIndex = this.layers.findIndex((l) => l.id === id);
+    if (layerIndex === -1) throw new Error('Layer not found');
+
+    const stageLayer = this.stageJSON.children.find((l: KonvaNode) => l.attrs.id === id);
+    if (stageLayer && stageLayer.children && stageLayer.children.length > 0) {
+      throw new Error('Cannot delete layer that contains objects');
+    }
+
+    this.layers.splice(layerIndex, 1);
+    this.stageJSON.children = this.stageJSON.children.filter((l: KonvaNode) => l.attrs.id !== id);
   }
 
   addObject(layerId: string, payload: KonvaNode[]): void {
