@@ -14,7 +14,9 @@ const useHistorySocket = () => {
       console.log(data);
       gameHistoryMessages.addUserMessage(data.userId, data.body.message);
     });
-
+    document.addEventListener("history:user-message", (data) => {
+      socket.emit("createHistoryItem", data);
+    });
     return () => {
       socket.emit("unsubscribeFromGame", gameStore.game?.id);
       socket.disconnect();
